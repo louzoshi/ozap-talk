@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Building blocks shared by every module: domain primitives, Result, the in-process
+       event-bus contracts, multi-tenancy, and the module-installer contract used by the host.
+       The AspNetCore framework reference is only for the routing/DI types in IModuleInstaller. -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+</Project>
