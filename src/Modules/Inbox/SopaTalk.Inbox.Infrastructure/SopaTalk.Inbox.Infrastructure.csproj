@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\SopaTalk.Inbox.Application\SopaTalk.Inbox.Application.csproj" />
+    <ProjectReference Include="..\SopaTalk.Inbox.Domain\SopaTalk.Inbox.Domain.csproj" />
+    <ProjectReference Include="..\..\..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+  </ItemGroup>
+</Project>

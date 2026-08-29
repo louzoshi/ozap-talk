@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+  </ItemGroup>
+</Project>

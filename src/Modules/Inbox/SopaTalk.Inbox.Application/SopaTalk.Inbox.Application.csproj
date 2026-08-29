@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\SopaTalk.Inbox.Domain\SopaTalk.Inbox.Domain.csproj" />
+    <ProjectReference Include="..\..\..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+  </ItemGroup>
+</Project>
