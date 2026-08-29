@@ -1,0 +1,32 @@
+# Local development dependencies. Not a production topology — see docs/custos.md.
+name: sopa-talk
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: sopatalk
+      POSTGRES_USER: sopatalk
+      POSTGRES_PASSWORD: sopatalk
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sopatalk"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Drop-in Redis replacement, BSD-licensed. Used as the SignalR backplane and cache
+  # once the API runs on more than one instance.
+  valkey:
+    image: valkey/valkey:8-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - valkey-data:/data
+
+volumes:
+  postgres-data:
+  valkey-data:
