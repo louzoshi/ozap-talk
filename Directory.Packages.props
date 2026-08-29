@@ -1,0 +1,51 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <!-- Versions are pinned centrally. Bump here, never in a .csproj. -->
+  <ItemGroup>
+    <!-- Persistence -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+
+    <!-- Background jobs -->
+    <PackageVersion Include="Hangfire.AspNetCore" Version="1.8.21" />
+    <PackageVersion Include="Hangfire.PostgreSql" Version="1.20.12" />
+
+    <!-- Web / API -->
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.10.0" />
+
+    <!-- Pin transitive Newtonsoft.Json (pulled by Hangfire) to a non-vulnerable version -->
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+
+    <!-- Observability -->
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <!-- OpenTelemetry: add OpenTelemetry.Extensions.Hosting + OTLP exporter when the
+         collector endpoint is provisioned (see docs/observabilidade.md). -->
+
+    <!-- Validation -->
+    <PackageVersion Include="FluentValidation" Version="12.0.0" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+
+    <!-- Hosting (workers) -->
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+
+    <!-- Tests -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="FluentAssertions" Version="7.0.0" />
+    <PackageVersion Include="NetArchTest.Rules" Version="1.3.2" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.1.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+  </ItemGroup>
+
+</Project>
