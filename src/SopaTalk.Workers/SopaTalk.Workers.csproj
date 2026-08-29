@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup>
+    <UserSecretsId>sopatalk-workers</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\Modules\Channels\SopaTalk.Channels.Infrastructure\SopaTalk.Channels.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Inbox\SopaTalk.Inbox.Infrastructure\SopaTalk.Inbox.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Crm\SopaTalk.Crm.Infrastructure\SopaTalk.Crm.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Chatbot\SopaTalk.Chatbot.Infrastructure\SopaTalk.Chatbot.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\AiAgent\SopaTalk.AiAgent.Infrastructure\SopaTalk.AiAgent.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Hangfire.AspNetCore" />
+    <PackageReference Include="Hangfire.PostgreSql" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+  </ItemGroup>
+</Project>

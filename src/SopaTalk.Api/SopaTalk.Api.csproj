@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\Modules\Channels\SopaTalk.Channels.Api\SopaTalk.Channels.Api.csproj" />
+    <ProjectReference Include="..\Modules\Inbox\SopaTalk.Inbox.Api\SopaTalk.Inbox.Api.csproj" />
+    <ProjectReference Include="..\Modules\Crm\SopaTalk.Crm.Api\SopaTalk.Crm.Api.csproj" />
+    <ProjectReference Include="..\Modules\Chatbot\SopaTalk.Chatbot.Api\SopaTalk.Chatbot.Api.csproj" />
+    <ProjectReference Include="..\Modules\AiAgent\SopaTalk.AiAgent.Api\SopaTalk.AiAgent.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Scalar.AspNetCore" />
+    <PackageReference Include="Hangfire.AspNetCore" />
+    <PackageReference Include="Hangfire.PostgreSql" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+  </ItemGroup>
+</Project>
