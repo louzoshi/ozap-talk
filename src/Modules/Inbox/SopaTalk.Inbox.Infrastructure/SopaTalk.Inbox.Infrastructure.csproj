@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <InternalsVisibleTo Include="SopaTalk.Inbox.UnitTests" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SopaTalk.Inbox.Application\SopaTalk.Inbox.Application.csproj" />
     <ProjectReference Include="..\SopaTalk.Inbox.Domain\SopaTalk.Inbox.Domain.csproj" />
     <ProjectReference Include="..\..\..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
