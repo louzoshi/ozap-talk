@@ -115,35 +115,50 @@ docs/                      architecture, roadmap, cost models, ADRs
 
 ## Getting started
 
-### Prerequisites
+Two supported setups — full details, per-OS install steps and troubleshooting in
+[`docs/ambiente.md`](docs/ambiente.md).
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- [Node.js](https://nodejs.org) 20+
-- Docker (Engine + Compose) — also required for the Testcontainers integration tests
-- `dotnet tool install --global dotnet-ef` (database migrations)
+### Option A — Dev Container (recommended, VS Code)
 
-### 1. Start local infrastructure
+Identical toolchain on Windows, macOS and Linux.
+
+1. Install VS Code + the **Dev Containers** extension, and have Docker running.
+2. Open the repo → Command Palette → **Dev Containers: Reopen in Container**.
+3. First build restores everything and starts PostgreSQL + Valkey. Then run
+   **Run and Debug → "API + Workers"**, and `npm --prefix frontend run dev`.
+
+See [`.devcontainer/README.md`](.devcontainer/README.md).
+
+### Option B — Native
+
+**Prerequisites** (versions are pinned — see `global.json`, `.nvmrc`,
+`.config/dotnet-tools.json`):
+
+- [.NET 10 SDK](https://dotnet.microsoft.com/download) (feature band ≥ 111)
+- [Node.js](https://nodejs.org) 22 LTS (`nvm install` reads `.nvmrc`)
+- Docker (Engine + Compose) — also required by the Testcontainers integration tests
+
+**Bootstrap:**
 
 ```bash
-docker compose -f infra/docker-compose.yml up -d
-```
+dotnet tool restore                          # dotnet-ef at the team's version
+dotnet restore SopaTalk.slnx
+npm --prefix frontend ci
 
-Brings up PostgreSQL on `localhost:5432` and Valkey on `localhost:6379`
-(database / user / password all `sopatalk`). The default connection strings in
-`appsettings.json` already point here.
-
-### 2. Build and test the backend
-
-```bash
+docker compose -f infra/docker-compose.yml up -d   # PostgreSQL :5432, Valkey :6379
 dotnet build SopaTalk.slnx
 dotnet test  SopaTalk.slnx
 ```
 
-### 3. Run the backend
+The default connection strings in `appsettings.json` already point at the Compose
+services (database / user / password all `sopatalk`).
+
+### Run
 
 ```bash
 dotnet run --project src/SopaTalk.Api        # http://localhost:5080
 dotnet run --project src/SopaTalk.Workers    # background-job processor
+cd frontend && npm run dev                   # http://localhost:5173
 ```
 
 - API docs (Scalar): `http://localhost:5080/scalar/v1`
@@ -151,17 +166,11 @@ dotnet run --project src/SopaTalk.Workers    # background-job processor
 - Health check: `http://localhost:5080/health`
 - Module smoke endpoints: `GET /api/<module>/_ping`
 
-### 4. Run the frontend
-
-```bash
-cd frontend
-npm install
-npm run dev                                   # http://localhost:5173
-```
-
 The Vite dev server proxies `/api`, `/jobs` and `/health` to the ASP.NET host, so the
 SPA and API share an origin in development — the same single-origin setup used in
 production, where `npm run build` emits straight into the API's `wwwroot`.
+
+Contributing workflow and the rules CI enforces: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ### Current limitations
 
@@ -191,6 +200,7 @@ Detail and task lists: [`docs/roadmap.md`](docs/roadmap.md).
 |---|---|
 | [`docs/arquitetura.md`](docs/arquitetura.md) | Architecture, modules, layering, boundary rules |
 | [`docs/roadmap.md`](docs/roadmap.md) | Releases R0–R5 with checklists |
+| [`docs/ambiente.md`](docs/ambiente.md) | Dev environment — Dev Container and per-OS native setup |
 | [`docs/custos.md`](docs/custos.md) | Infrastructure & SaaS cost model |
 | [`docs/custos-whatsapp.md`](docs/custos-whatsapp.md) | WhatsApp / Meta billing — what is paid, what is free, the 24-hour window, AI-agent token billing |
 | [`docs/adr/`](docs/adr/) | Architecture decision records (modular monolith, stack, background jobs, multi-tenancy) |

@@ -56,14 +56,26 @@ Módulos: `Channels` (WhatsApp Cloud API), `Inbox` (multiatendimento), `Crm`,
 - Um arquivo de endpoints por feature em `*.Api`.
 - Nomes, comentários e documentação em português; identificadores de código em inglês.
 
+## Ambiente
+
+VS Code + Dev Container (`.devcontainer/`) é o caminho recomendado. Setup nativo e
+por SO em `docs/ambiente.md`. Versões fixadas: `global.json` (.NET), `.nvmrc` (Node 22),
+`.config/dotnet-tools.json` (dotnet-ef).
+
 ## Comandos
 
 ```bash
+dotnet tool restore                                # dotnet-ef na versão do time
+dotnet restore SopaTalk.slnx
+npm --prefix frontend ci
+
+docker compose -f infra/docker-compose.yml up -d   # Postgres + Valkey locais
 dotnet build SopaTalk.slnx
 dotnet test SopaTalk.slnx
-dotnet run --project src/SopaTalk.Api        # API + dashboard de jobs em /jobs
-dotnet run --project src/SopaTalk.Workers     # processador de jobs
-docker compose -f infra/docker-compose.yml up -d   # Postgres + Redis locais
+dotnet format SopaTalk.slnx                         # formatar C# antes de commitar
 
-cd frontend && npm install && npm run dev      # SPA em http://localhost:5173
+dotnet run --project src/SopaTalk.Api              # http://localhost:5080  (jobs em /jobs)
+dotnet run --project src/SopaTalk.Workers          # processador de jobs
+npm --prefix frontend run dev                      # SPA em http://localhost:5173
+npm --prefix frontend run lint                     # eslint
 ```
