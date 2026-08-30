@@ -1,0 +1,49 @@
+{
+  "name": "sopa-talk",
+
+  // .NET 10 SDK image maintained by the Dev Containers team. If this tag ever fails
+  // to pull, bump it (see https://mcr.microsoft.com/artifact/mar/devcontainers/dotnet/tags).
+  "image": "mcr.microsoft.com/devcontainers/dotnet:1-10.0",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    // Lets `docker compose` and Testcontainers talk to the host Docker daemon
+    // from inside the container.
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": { "moby": true }
+  },
+
+  // Postgres + Valkey run on the host Docker via infra/docker-compose.yml, published
+  // on the host's localhost. From inside the container they are reached as
+  // host.docker.internal (the Dev Containers CLI wires the host-gateway alias).
+  "containerEnv": {
+    "ASPNETCORE_ENVIRONMENT": "Development",
+    "ConnectionStrings__Database": "Host=host.docker.internal;Port=5432;Database=sopatalk;Username=sopatalk;Password=sopatalk",
+    "ConnectionStrings__Redis": "host.docker.internal:6379"
+  },
+
+  "forwardPorts": [5080, 5173],
+  "portsAttributes": {
+    "5080": { "label": "API" },
+    "5173": { "label": "Frontend (Vite)" }
+  },
+
+  "onCreateCommand": "dotnet tool restore",
+  "postCreateCommand": "dotnet restore SopaTalk.slnx && npm --prefix frontend ci",
+  "postStartCommand": "docker compose -f infra/docker-compose.yml up -d",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "humao.rest-client"
+      ]
+    }
+  },
+
+  "remoteUser": "vscode"
+}
