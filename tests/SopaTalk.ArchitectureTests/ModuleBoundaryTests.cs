@@ -10,7 +10,8 @@ namespace SopaTalk.ArchitectureTests;
 /// </summary>
 public class ModuleBoundaryTests
 {
-    private static readonly string[] Modules = ["Channels", "Inbox", "Crm", "Chatbot", "AiAgent"];
+    private static readonly string[] Modules =
+        ["Accounts", "Channels", "Inbox", "Crm", "Chatbot", "AiAgent"];
 
     private static Assembly Load(string name) => Assembly.Load($"SopaTalk.{name}");
 

@@ -36,5 +36,9 @@
     <ProjectReference Include="..\..\src\Modules\AiAgent\SopaTalk.AiAgent.Application\SopaTalk.AiAgent.Application.csproj" />
     <ProjectReference Include="..\..\src\Modules\AiAgent\SopaTalk.AiAgent.Infrastructure\SopaTalk.AiAgent.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Modules\AiAgent\SopaTalk.AiAgent.Api\SopaTalk.AiAgent.Api.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Accounts\SopaTalk.Accounts.Domain\SopaTalk.Accounts.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Accounts\SopaTalk.Accounts.Application\SopaTalk.Accounts.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Accounts\SopaTalk.Accounts.Infrastructure\SopaTalk.Accounts.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Accounts\SopaTalk.Accounts.Api\SopaTalk.Accounts.Api.csproj" />
   </ItemGroup>
 </Project>
