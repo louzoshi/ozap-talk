@@ -23,3 +23,9 @@ indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
+
+# EF Core-generated migrations — not our style to enforce
+[**/Migrations/*.cs]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none
+dotnet_diagnostic.IDE0161.severity = none
