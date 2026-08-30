@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "@/app/AppLayout";
+import { Placeholder } from "@/shared/Placeholder";
 
 // Feature routes mirror the backend modules. Each feature owns its own route subtree
 // under src/features/<feature>/routes.tsx as it gets built.
@@ -16,7 +17,3 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
-
-function Placeholder({ title }: { title: string }) {
-  return <h1>{title}</h1>;
-}

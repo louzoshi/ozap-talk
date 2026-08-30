@@ -1,0 +1,4 @@
+dist
+node_modules
+../src/SopaTalk.Api/wwwroot
+package-lock.json
