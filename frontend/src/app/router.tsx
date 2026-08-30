@@ -1,19 +1,34 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import { AppLayout } from "@/app/AppLayout";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "@/shared/auth/AuthContext";
+import { AppShell } from "@/app/AppShell";
+import { LoginPage } from "@/features/auth/LoginPage";
+import { RegisterPage } from "@/features/auth/RegisterPage";
+import { InboxPage } from "@/features/inbox/InboxPage";
 import { Placeholder } from "@/shared/Placeholder";
 
-// Feature routes mirror the backend modules. Each feature owns its own route subtree
-// under src/features/<feature>/routes.tsx as it gets built.
+function RequireAuth() {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="auth">Carregando…</div>;
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
+}
+
 export const router = createBrowserRouter([
+  { path: "/login", element: <LoginPage /> },
+  { path: "/register", element: <RegisterPage /> },
   {
-    path: "/",
-    element: <AppLayout />,
+    element: <RequireAuth />,
     children: [
-      { index: true, element: <Navigate to="/inbox" replace /> },
-      { path: "inbox", element: <Placeholder title="Inbox" /> },
-      { path: "crm", element: <Placeholder title="CRM" /> },
-      { path: "chatbot", element: <Placeholder title="ChatBot" /> },
-      { path: "ai-agent", element: <Placeholder title="Agente IA" /> },
+      {
+        path: "/",
+        element: <AppShell />,
+        children: [
+          { index: true, element: <Navigate to="/inbox" replace /> },
+          { path: "inbox", element: <InboxPage /> },
+          { path: "crm", element: <Placeholder title="CRM" /> },
+          { path: "chatbot", element: <Placeholder title="ChatBot" /> },
+          { path: "ai-agent", element: <Placeholder title="Agente IA" /> },
+        ],
+      },
     ],
   },
 ]);
