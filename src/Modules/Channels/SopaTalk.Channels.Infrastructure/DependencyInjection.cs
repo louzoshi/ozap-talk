@@ -1,13 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SopaTalk.Channels.Application.Abstractions;
 using SopaTalk.Channels.Infrastructure.Persistence;
+using SopaTalk.Channels.Infrastructure.WhatsApp;
 
 namespace SopaTalk.Channels.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddChannelsInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddChannelsInfrastructure(
+        this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Database")
             ?? throw new InvalidOperationException("ConnectionStrings:Database is not configured.");
@@ -16,7 +19,16 @@ public static class DependencyInjection
             .UseNpgsql(connectionString, npgsql => npgsql
                 .MigrationsHistoryTable("__ef_migrations_history", ChannelsDbContext.Schema)));
 
-        // TODO: register repositories and integration-event handlers for this module here.
+        services.AddScoped<IChannelRepository, ChannelRepository>();
+        services.AddScoped<IProcessedMessageStore, ProcessedMessageStore>();
+        services.AddScoped<IChannelsUnitOfWork>(sp => sp.GetRequiredService<ChannelsDbContext>());
+
+        services.AddOptions<ChannelsOptions>()
+            .Bind(configuration.GetSection(ChannelsOptions.SectionName));
+
+        services.AddHttpClient<IWhatsAppApi, WhatsAppCloudApi>(client =>
+            client.BaseAddress = new Uri("https://graph.facebook.com"));
+
         return services;
     }
 }
