@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/SopaTalk.Api/bin/Debug/net10.0/SopaTalk.Api.dll",
+      "cwd": "${workspaceFolder}/src/SopaTalk.Api",
+      "env": { "ASPNETCORE_ENVIRONMENT": "Development" },
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s/scalar/v1"
+      }
+    },
+    {
+      "name": "Workers",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/SopaTalk.Workers/bin/Debug/net10.0/SopaTalk.Workers.dll",
+      "cwd": "${workspaceFolder}/src/SopaTalk.Workers",
+      "env": { "DOTNET_ENVIRONMENT": "Development" },
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "API + Workers",
+      "configurations": ["API", "Workers"],
+      "stopAll": true
+    }
+  ]
+}
