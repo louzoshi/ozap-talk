@@ -188,13 +188,16 @@ Contributing workflow and the rules CI enforces: [`CONTRIBUTING.md`](CONTRIBUTIN
 
 ### Current state
 
-- **Auth works.** Register a company, sign in, call authenticated endpoints. Password
-  hashing (PBKDF2), JWT issuance/validation and tenant isolation (EF Core global
-  filter + write interceptor) are in place. See [`docs/seguranca.md`](docs/seguranca.md).
-- **Still missing in R0:** refresh tokens, 2FA, login lockout, Postgres Row-Level
-  Security, a CQRS dispatcher, the transactional outbox, CI.
-- **No WhatsApp integration yet.** The `Channels` module is a skeleton (R1).
-- **Frontend is a shell.** Sidebar + placeholder pages; no login screen yet.
+- **Auth works.** Register a company, sign in, call authenticated endpoints. PBKDF2
+  hashing, JWT, tenant isolation (EF Core global filter + write interceptor).
+  See [`docs/seguranca.md`](docs/seguranca.md).
+- **R1 vertical slice is live.** Connect a WhatsApp number, receive webhooks
+  (signature-checked, idempotent), and reply — inbound turns into a conversation,
+  the agent's reply goes back out through the Graph API. A 3-column inbox UI (login
+  → conversation list → thread → composer) is wired to the API and to SignalR for
+  live updates.
+- **Still to do:** media & template messages, teams/queues/tags, refresh tokens,
+  2FA, login lockout, Row-Level Security, a CQRS dispatcher, the outbox, CI.
 
 ## Roadmap
 

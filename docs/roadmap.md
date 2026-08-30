@@ -25,18 +25,21 @@ Esqueleto do monólito modular, build verde, infra local.
 
 ## R1 — Plataforma de Atendimento (primeiro produto vendável)
 
-Multiatendimento sobre a WhatsApp Cloud API.
+Multiatendimento sobre a WhatsApp Cloud API. **Fatia vertical no ar:**
 
-- [ ] **Channels**: conectar número via Cloud API, verificar assinatura do webhook,
-      ingestão idempotente, enviar texto/mídia, templates (HSM), janela de 24h,
-      tratamento de messaging tiers e rate limit
-- [ ] **Inbox**: lista de conversas, atribuição manual e automática, setores/equipes,
-      filas de atendimento, transferência, notas internas, tags, respostas rápidas
-- [ ] Realtime: `InboxHub` (mensagem nova, conversa atribuída, digitando)
+- [x] **Channels**: conectar número via Cloud API, verificação do webhook,
+      validação de assinatura `X-Hub-Signature-256`, ingestão idempotente,
+      envio de texto pela Graph API
+- [x] **Inbox**: contatos, conversas (aberta/esperando/encerrada), mensagens,
+      lista com busca e abas, thread, responder, atribuir, encerrar, contador de não lidas
+- [x] Realtime: `InboxHub` (SignalR, grupo por tenant) + relay de `ConversationChanged`
+- [x] Frontend: login/cadastro, layout 3 colunas (rail + lista + conversa) ligado à API + SignalR
+- [ ] Envio de mídia e templates (HSM), janela de 24h, messaging tiers e rate limit
+- [ ] Atribuição automática, setores/equipes, filas, transferência, notas, tags, respostas rápidas
 - [ ] Webchat widget para site (canal adicional)
-- [ ] Frontend: tela de inbox, autenticação, gestão de usuários/setores
 - [ ] Relatórios essenciais: volume de conversas, tempo de resposta, por atendente
 - [ ] Opt-in / consentimento por contato (LGPD + política da Meta)
+- [ ] Refresh token no frontend (hoje o token expira em 60 min)
 
 ## R2 — CRM para WhatsApp
 

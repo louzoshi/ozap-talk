@@ -47,16 +47,32 @@ Meta **provisiona automaticamente** um número de teste:
 
 ### O que guardar nas configs (nunca no git)
 
+App-level (`Channels` section — `dotnet user-secrets` em dev, env var em prod):
+
 ```
-WhatsApp__PhoneNumberId      = ...
-WhatsApp__BusinessAccountId  = ...
-WhatsApp__AccessToken        = ...        (token do system user)
-WhatsApp__WebhookVerifyToken = (string que você inventar)
-WhatsApp__AppSecret          = ...        (para validar a assinatura do webhook)
+Channels__WebhookVerifyToken = (string que você inventar; a mesma no painel da Meta)
+Channels__AppSecret          = ...   (Meta app secret — valida X-Hub-Signature-256)
 ```
 
-Use `dotnet user-secrets` (dev) ou variáveis de ambiente. O `.gitignore` já bloqueia
-`appsettings.*.local.json` e `.env`.
+Por número (via `POST /api/channels`, autenticado como admin):
+
+```
+phoneNumberId       = ...   (Meta phone_number_id)
+displayPhoneNumber  = ...
+wabaId              = ...
+accessToken         = ...   (token do system user)
+```
+
+O `.gitignore` já bloqueia `appsettings.*.local.json` e `.env`.
+
+### Fluxo ponta a ponta (dev)
+
+1. `Channels__WebhookVerifyToken` e `Channels__AppSecret` nos user-secrets do `SopaTalk.Api`
+2. `cloudflared tunnel --url http://localhost:5080` → URL pública
+3. No painel da Meta: webhook = `https://<tunnel>/api/channels/webhook`, verify token = o mesmo
+4. `POST /api/channels` com o `phoneNumberId` + `accessToken` do número de teste
+5. Mande mensagem do seu WhatsApp para o número de teste → aparece na inbox
+6. Responda pela inbox → chega no seu WhatsApp
 
 ## Túnel para o webhook (localhost)
 
