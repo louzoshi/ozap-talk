@@ -31,9 +31,12 @@ O autor de todo o trabalho é o dono do repositório. Escreva como ele escreveri
 Monólito modular. Um deploy, fronteiras internas fortes. Ver `docs/arquitetura.md`
 e os ADRs em `docs/adr/`.
 
-Módulos: `Channels` (WhatsApp Cloud API), `Inbox` (multiatendimento), `Crm`,
-`Chatbot`, `AiAgent`. Cada módulo tem 4 projetos: `Domain`, `Application`,
-`Infrastructure`, `Api`.
+Módulos: `Accounts` (empresas, usuários, login, JWT, tenancy), `Channels` (WhatsApp
+Cloud API), `Inbox` (multiatendimento), `Crm`, `Chatbot`, `AiAgent`. Cada módulo tem
+4 projetos: `Domain`, `Application`, `Infrastructure`, `Api`.
+
+`SopaTalk.SharedKernel.Persistence`: base EF Core comum (`TenantDbContext`,
+`TenantSaveChangesInterceptor`). Segurança e tenancy: `docs/seguranca.md`.
 
 ### Regras que não se quebram
 

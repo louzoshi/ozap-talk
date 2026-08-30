@@ -98,7 +98,9 @@ src/
   SopaTalk.Api/            HTTP host — composes modules, auth, OpenAPI, /jobs dashboard, SPA fallback
   SopaTalk.Workers/        background-job host (Hangfire server)
   SopaTalk.SharedKernel/   domain primitives, Result, event-bus contracts, multi-tenancy, IModuleInstaller
+  SopaTalk.SharedKernel.Persistence/  EF Core building blocks — TenantDbContext, tenant interceptor
   Modules/
+    Accounts/              companies, users, sign-in, JWT, multi-tenancy
     Channels/              WhatsApp Cloud API
     Inbox/                 multi-agent attendance
     Crm/                   pipelines / deals
@@ -162,9 +164,21 @@ cd frontend && npm run dev                   # http://localhost:5173
 ```
 
 - API docs (Scalar): `http://localhost:5080/scalar/v1`
-- Job dashboard: `http://localhost:5080/jobs`
+- Job dashboard: `http://localhost:5080/jobs` (Development only)
 - Health check: `http://localhost:5080/health`
 - Module smoke endpoints: `GET /api/<module>/_ping`
+
+Try the auth flow:
+
+```bash
+curl -sX POST localhost:5080/api/accounts/register -H 'content-type: application/json' \
+  -d '{"companyName":"Acme","slug":"acme","ownerName":"Ana","email":"ana@acme.com","password":"supersecret"}'
+# -> { accessToken, expiresAtUtc, user }
+
+curl -s localhost:5080/api/accounts/me -H "authorization: Bearer <accessToken>"
+```
+
+In Development, migrations for every module run automatically on startup.
 
 The Vite dev server proxies `/api`, `/jobs` and `/health` to the ASP.NET host, so the
 SPA and API share an origin in development — the same single-origin setup used in
@@ -172,14 +186,15 @@ production, where `npm run build` emits straight into the API's `wwwroot`.
 
 Contributing workflow and the rules CI enforces: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-### Current limitations
+### Current state
 
-- **No database migrations yet.** The app starts and the module composition + Hangfire
-  connect to PostgreSQL, but any endpoint that reads or writes domain data will fail
-  until R0 lands migrations and multi-tenancy.
-- **No real authentication.** The JWT bearer scheme is wired but points at a
-  placeholder authority.
-- **No WhatsApp integration yet.** The `Channels` module is a skeleton.
+- **Auth works.** Register a company, sign in, call authenticated endpoints. Password
+  hashing (PBKDF2), JWT issuance/validation and tenant isolation (EF Core global
+  filter + write interceptor) are in place. See [`docs/seguranca.md`](docs/seguranca.md).
+- **Still missing in R0:** refresh tokens, 2FA, login lockout, Postgres Row-Level
+  Security, a CQRS dispatcher, the transactional outbox, CI.
+- **No WhatsApp integration yet.** The `Channels` module is a skeleton (R1).
+- **Frontend is a shell.** Sidebar + placeholder pages; no login screen yet.
 
 ## Roadmap
 
@@ -201,8 +216,10 @@ Detail and task lists: [`docs/roadmap.md`](docs/roadmap.md).
 | [`docs/arquitetura.md`](docs/arquitetura.md) | Architecture, modules, layering, boundary rules |
 | [`docs/roadmap.md`](docs/roadmap.md) | Releases R0–R5 with checklists |
 | [`docs/ambiente.md`](docs/ambiente.md) | Dev environment — Dev Container and per-OS native setup |
+| [`docs/seguranca.md`](docs/seguranca.md) | Auth model, password hashing, JWT, multi-tenancy — what's done and what's not |
 | [`docs/custos.md`](docs/custos.md) | Infrastructure & SaaS cost model |
 | [`docs/custos-whatsapp.md`](docs/custos-whatsapp.md) | WhatsApp / Meta billing — what is paid, what is free, the 24-hour window, AI-agent token billing |
+| [`docs/whatsapp-teste.md`](docs/whatsapp-teste.md) | How to get a test WhatsApp number without risking a personal one |
 | [`docs/adr/`](docs/adr/) | Architecture decision records (modular monolith, stack, background jobs, multi-tenancy) |
 
 > Documentation prose is written in Portuguese; code identifiers are in English.

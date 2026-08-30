@@ -91,8 +91,13 @@ cd frontend && npm run dev                    # http://localhost:5173
 ```
 
 - Scalar (API docs): <http://localhost:5080/scalar/v1>
-- Hangfire: <http://localhost:5080/jobs>
+- Hangfire: <http://localhost:5080/jobs> (só em Development)
 - Health: <http://localhost:5080/health>
+
+Em Development, as migrations de todos os módulos rodam sozinhas no start. A chave
+JWT de dev já vem em `appsettings.Development.json`. Para sobrescrever sem tocar no
+arquivo: `dotnet user-secrets set "Jwt:SigningKey" "<valor>" --project src/SopaTalk.Api`.
+Em produção, `Jwt__SigningKey` vem de variável de ambiente / secret manager.
 
 ### HTTPS local (opcional)
 
@@ -109,7 +114,7 @@ dotnet dev-certs https --trust
 | Sintoma | Causa | Correção |
 |---|---|---|
 | `permission denied ... docker.sock` | usuário fora do grupo `docker` | relogar após `usermod -aG docker $USER` |
-| API sobe mas endpoints com banco dão erro | ainda não há migrations (R0) | esperado por enquanto |
+| API não sobe: "Failed to connect to ...:5432" | Postgres não está no ar | `docker compose -f infra/docker-compose.yml up -d` |
 | `dotnet-ef: command not found` | tool não restaurada | `dotnet tool restore` e prefixe com `dotnet ef ...` |
 | Front não conecta na API | porta errada | API é **5080**; o proxy do Vite já aponta pra lá |
 | Testcontainers falha | Docker não acessível | subir Docker; no Dev Container, feature `docker-outside-of-docker` |

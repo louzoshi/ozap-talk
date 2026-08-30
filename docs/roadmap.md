@@ -10,12 +10,18 @@ Esqueleto do monólito modular, build verde, infra local.
 - [x] Solution, módulos, SharedKernel, hosts, CI local de build
 - [x] Central Package Management, `Directory.Build.props`
 - [x] docker-compose (Postgres + Valkey)
-- [ ] Mediador CQRS próprio + pipeline de validação (FluentValidation)
-- [ ] `TenantId` + filtro global EF Core + RLS + primeira migration por módulo
-- [ ] Autenticação (ASP.NET Identity ou IdP) + cadastro de empresa/usuário + 2FA
-- [ ] Outbox + bus in-process com entrega confiável
-- [ ] Serilog estruturado + health checks + Sentry
+- [x] Ambiente de time: Dev Container, `.gitattributes`, tool manifest, `.vscode/`
+- [x] Autenticação: módulo `Accounts`, cadastro de empresa + dono, login, JWT, hash PBKDF2
+- [x] `TenantId` + `ITenantOwned` + filtro global EF Core + interceptor anti-cross-tenant
+- [x] Bus de integração in-process + primeira migration (`Accounts`)
+- [x] Serilog estruturado + health checks
+- [ ] Row-Level Security no Postgres (segunda barreira de tenancy)
+- [ ] Mediador CQRS próprio + pipeline de validação no lugar dos handlers diretos
+- [ ] Refresh token + revogação, 2FA, lockout no login, convite de usuário
+- [ ] Outbox para os integration events (entrega confiável)
+- [ ] Sentry
 - [ ] Pipeline CI (build + test + `dotnet list package --vulnerable`)
+- [ ] Converter os demais DbContexts de módulo para `TenantDbContext`
 
 ## R1 — Plataforma de Atendimento (primeiro produto vendável)
 
