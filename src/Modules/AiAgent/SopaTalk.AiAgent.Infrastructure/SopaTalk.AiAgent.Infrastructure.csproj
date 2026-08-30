@@ -3,6 +3,7 @@
     <ProjectReference Include="..\SopaTalk.AiAgent.Application\SopaTalk.AiAgent.Application.csproj" />
     <ProjectReference Include="..\SopaTalk.AiAgent.Domain\SopaTalk.AiAgent.Domain.csproj" />
     <ProjectReference Include="..\..\..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\SopaTalk.SharedKernel.Persistence\SopaTalk.SharedKernel.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />

@@ -3,6 +3,7 @@
     <ProjectReference Include="..\SopaTalk.Chatbot.Application\SopaTalk.Chatbot.Application.csproj" />
     <ProjectReference Include="..\SopaTalk.Chatbot.Domain\SopaTalk.Chatbot.Domain.csproj" />
     <ProjectReference Include="..\..\..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\SopaTalk.SharedKernel.Persistence\SopaTalk.SharedKernel.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
