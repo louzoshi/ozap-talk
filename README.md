@@ -218,6 +218,7 @@ Detail and task lists: [`docs/roadmap.md`](docs/roadmap.md).
 | [`docs/ambiente.md`](docs/ambiente.md) | Dev environment — Dev Container and per-OS native setup |
 | [`docs/seguranca.md`](docs/seguranca.md) | Auth model, password hashing, JWT, multi-tenancy — what's done and what's not |
 | [`docs/custos.md`](docs/custos.md) | Infrastructure & SaaS cost model |
+| [`docs/pagamentos.md`](docs/pagamentos.md) | Billing — PSP choice, Pix/card/installments, when to build the `Billing` module |
 | [`docs/custos-whatsapp.md`](docs/custos-whatsapp.md) | WhatsApp / Meta billing — what is paid, what is free, the 24-hour window, AI-agent token billing |
 | [`docs/whatsapp-teste.md`](docs/whatsapp-teste.md) | How to get a test WhatsApp number without risking a personal one |
 | [`docs/adr/`](docs/adr/) | Architecture decision records (modular monolith, stack, background jobs, multi-tenancy) |
