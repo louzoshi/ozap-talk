@@ -1,0 +1,47 @@
+# Normalize every text file to LF in the repository, regardless of the OS or the
+# git settings of whoever commits. Working copies on Windows still get CRLF where
+# a tool needs it; the repo stays LF-only so diffs and merges are clean.
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF in the working copy.
+*.ps1  text eol=crlf
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# Shell scripts must stay LF or they will not run on Linux/macOS.
+*.sh   text eol=lf
+
+# Explicit text types (helps older git and some editors)
+*.cs        text
+*.csproj    text
+*.props     text
+*.targets   text
+*.slnx      text
+*.json      text
+*.ts        text
+*.tsx       text
+*.js        text
+*.jsx       text
+*.css       text
+*.html      text
+*.md        text
+*.yml       text
+*.yaml      text
+*.http      text
+
+# Binary — never touch, never try to diff
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.pdf   binary
+*.zip   binary
+*.woff  binary
+*.woff2 binary
+*.dll   binary
+*.pfx   binary
+*.snk   binary
+
+# Generated files: keep them in the repo but collapse them in diffs / PRs
+frontend/package-lock.json  linguist-generated=true -diff
