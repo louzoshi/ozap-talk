@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Integration events only. Every module may reference this; it references nothing
+       but the messaging primitives. A contract change here recompiles all modules — by design. -->
+  <ItemGroup>
+    <ProjectReference Include="..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+  </ItemGroup>
+</Project>

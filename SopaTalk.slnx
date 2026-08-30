@@ -43,8 +43,10 @@
   <Folder Name="/tests/">
     <Project Path="tests/SopaTalk.Accounts.UnitTests/SopaTalk.Accounts.UnitTests.csproj" />
     <Project Path="tests/SopaTalk.ArchitectureTests/SopaTalk.ArchitectureTests.csproj" />
+    <Project Path="tests/SopaTalk.Channels.UnitTests/SopaTalk.Channels.UnitTests.csproj" />
     <Project Path="tests/SopaTalk.Inbox.UnitTests/SopaTalk.Inbox.UnitTests.csproj" />
   </Folder>
+  <Project Path="src/SopaTalk.SharedContracts/SopaTalk.SharedContracts.csproj" />
   <Project Path="src/SopaTalk.SharedKernel.Persistence/SopaTalk.SharedKernel.Persistence.csproj" />
   <Project Path="src/SopaTalk.SharedKernel/SopaTalk.SharedKernel.csproj" />
 </Solution>

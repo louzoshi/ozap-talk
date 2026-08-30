@@ -2,6 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SopaTalk.Crm.Domain\SopaTalk.Crm.Domain.csproj" />
     <ProjectReference Include="..\..\..\SopaTalk.SharedKernel\SopaTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\SopaTalk.SharedContracts\SopaTalk.SharedContracts.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" />

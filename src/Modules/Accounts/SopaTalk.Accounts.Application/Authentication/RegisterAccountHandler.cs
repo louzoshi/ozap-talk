@@ -1,8 +1,8 @@
 using FluentValidation;
 using SopaTalk.Accounts.Application.Abstractions;
-using SopaTalk.Accounts.Application.Contracts;
 using SopaTalk.Accounts.Domain.Accounts;
 using SopaTalk.Accounts.Domain.Users;
+using SopaTalk.SharedContracts.Accounts;
 using SopaTalk.SharedKernel.Messaging;
 using SopaTalk.SharedKernel.Results;
 

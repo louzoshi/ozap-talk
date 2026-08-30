@@ -7,6 +7,7 @@
     <ProjectReference Include="..\Modules\Chatbot\SopaTalk.Chatbot.Api\SopaTalk.Chatbot.Api.csproj" />
     <ProjectReference Include="..\Modules\AiAgent\SopaTalk.AiAgent.Api\SopaTalk.AiAgent.Api.csproj" />
     <ProjectReference Include="..\Modules\Accounts\SopaTalk.Accounts.Api\SopaTalk.Accounts.Api.csproj" />
+    <ProjectReference Include="..\SopaTalk.SharedContracts\SopaTalk.SharedContracts.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
