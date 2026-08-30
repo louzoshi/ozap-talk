@@ -1,24 +1,69 @@
+using System.Text;
 using Hangfire;
 using Hangfire.PostgreSql;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 using SopaTalk.Api;
+using SopaTalk.Api.Security;
+using SopaTalk.SharedKernel.Messaging;
+using SopaTalk.SharedKernel.MultiTenancy;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- Logging -------------------------------------------------------------------
+// --- Logging -----------------------------------------------------------------
 builder.Host.UseSerilog((context, loggerConfig) => loggerConfig
     .ReadFrom.Configuration(context.Configuration)
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
-// --- Platform services --------------------------------------------------------
+// --- Platform services ------------------------------------------------------
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
-builder.Services.AddAuthentication().AddJwtBearer();
-builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
 
+// Multi-tenancy: one tenant context per request/scope, set by TenantResolutionMiddleware.
+builder.Services.AddScoped<TenantContext>();
+builder.Services.AddScoped<ITenantContext>(sp => sp.GetRequiredService<TenantContext>());
+builder.Services.AddScoped<ISettableTenantContext>(sp => sp.GetRequiredService<TenantContext>());
+
+builder.Services.AddInProcessEventBus();
+
+// --- Authentication / authorization ----------------------------------------
+var jwt = builder.Configuration.GetSection("Jwt");
+var signingKey = jwt["SigningKey"]
+    ?? throw new InvalidOperationException("Jwt:SigningKey is not configured (use user-secrets in dev).");
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.MapInboundClaims = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwt["Issuer"],
+            ValidateAudience = true,
+            ValidAudience = jwt["Audience"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30),
+            NameClaimType = "sub",
+            RoleClaimType = "role",
+        };
+    });
+
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build())
+    .AddPolicy("admin", policy => policy.RequireRole("Owner", "Admin"))
+    .AddPolicy("owner", policy => policy.RequireRole("Owner"));
+
+// --- Background jobs -------------------------------------------------------
 var connectionString = builder.Configuration.GetConnectionString("Database")
     ?? throw new InvalidOperationException("ConnectionStrings:Database is not configured.");
 
@@ -27,13 +72,21 @@ builder.Services.AddHangfire(config => config
     .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(connectionString)));
 builder.Services.AddHangfireServer();
 
-// --- Modules -----------------------------------------------------------------
+// --- Modules -------------------------------------------------------------
 foreach (var module in ModuleRegistry.All)
 {
     module.AddModule(builder.Services, builder.Configuration);
 }
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    foreach (var module in ModuleRegistry.All)
+    {
+        await module.MigrateAsync(app.Services, CancellationToken.None);
+    }
+}
 
 app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
@@ -43,15 +96,20 @@ app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapOpenApi().AllowAnonymous();
+    app.MapScalarApiReference().AllowAnonymous();
 }
 
 app.UseAuthentication();
+app.UseMiddleware<TenantResolutionMiddleware>();
 app.UseAuthorization();
 
-app.MapHealthChecks("/health");
-app.MapHangfireDashboard("/jobs"); // TODO: lock this down to platform admins before any real deploy.
+app.MapHealthChecks("/health").AllowAnonymous();
+
+app.MapHangfireDashboard("/jobs", new DashboardOptions
+{
+    Authorization = [new HangfireDashboardAuthorizationFilter(app.Environment)],
+}).AllowAnonymous();
 
 foreach (var module in ModuleRegistry.All)
 {
@@ -59,7 +117,7 @@ foreach (var module in ModuleRegistry.All)
 }
 
 // SPA fallback: the React/Vite build is served as static files from wwwroot in production.
-app.MapFallbackToFile("index.html");
+app.MapFallbackToFile("index.html").AllowAnonymous();
 
 app.Run();
 

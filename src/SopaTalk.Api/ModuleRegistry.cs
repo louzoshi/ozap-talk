@@ -10,6 +10,7 @@ internal static class ModuleRegistry
 {
     public static IReadOnlyList<IModuleInstaller> All { get; } =
     [
+        new SopaTalk.Accounts.Api.AccountsModuleInstaller(),
         new SopaTalk.Channels.Api.ChannelsModuleInstaller(),
         new SopaTalk.Inbox.Api.InboxModuleInstaller(),
         new SopaTalk.Crm.Api.CrmModuleInstaller(),
