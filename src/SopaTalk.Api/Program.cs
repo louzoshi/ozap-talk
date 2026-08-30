@@ -6,7 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 using SopaTalk.Api;
+using SopaTalk.Api.Realtime;
 using SopaTalk.Api.Security;
+using SopaTalk.SharedContracts.Inbox;
 using SopaTalk.SharedKernel.Messaging;
 using SopaTalk.SharedKernel.MultiTenancy;
 
@@ -30,6 +32,8 @@ builder.Services.AddScoped<ITenantContext>(sp => sp.GetRequiredService<TenantCon
 builder.Services.AddScoped<ISettableTenantContext>(sp => sp.GetRequiredService<TenantContext>());
 
 builder.Services.AddInProcessEventBus();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<IIntegrationEventHandler<ConversationChanged>, ConversationChangedRelay>();
 
 // --- Authentication / authorization ----------------------------------------
 var jwt = builder.Configuration.GetSection("Jwt");
@@ -53,6 +57,23 @@ builder.Services
             ClockSkew = TimeSpan.FromSeconds(30),
             NameClaimType = "sub",
             RoleClaimType = "role",
+        };
+
+        // SignalR can't send an Authorization header on the WebSocket handshake —
+        // accept the token from the query string for hub connections only.
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    context.HttpContext.Request.Path.StartsWithSegments("/hubs"))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            },
         };
     });
 
@@ -105,6 +126,7 @@ app.UseMiddleware<TenantResolutionMiddleware>();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health").AllowAnonymous();
+app.MapHub<InboxHub>("/hubs/inbox");
 
 app.MapHangfireDashboard("/jobs", new DashboardOptions
 {
