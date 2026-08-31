@@ -8,13 +8,14 @@ import {
   type ReactNode,
 } from "react";
 import { api, tokenStore } from "@/shared/api/client";
+import type { MembershipRole } from "@/shared/auth/roles";
 
 export interface CurrentUser {
   id: string;
   accountId: string;
   email: string;
   displayName: string;
-  role: string;
+  role: MembershipRole;
   companyName: string;
 }
 
@@ -29,6 +30,7 @@ interface AuthState {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   register: (input: RegisterInput) => Promise<void>;
+  acceptInvite: (token: string, input: { displayName: string; password: string }) => Promise<void>;
   signOut: () => void;
 }
 
@@ -86,14 +88,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [apply],
   );
 
+  const acceptInvite = useCallback(
+    async (token: string, input: { displayName: string; password: string }) => {
+      apply(
+        await api<AuthResult>(`/accounts/invite/${encodeURIComponent(token)}`, {
+          method: "POST",
+          body: JSON.stringify(input),
+        }),
+      );
+    },
+    [apply],
+  );
+
   const signOut = useCallback(() => {
     tokenStore.clear();
     setUser(null);
   }, []);
 
   const value = useMemo<AuthState>(
-    () => ({ user, loading, signIn, register, signOut }),
-    [user, loading, signIn, register, signOut],
+    () => ({ user, loading, signIn, register, acceptInvite, signOut }),
+    [user, loading, signIn, register, acceptInvite, signOut],
   );
 
   return <AuthCtx value={value}>{children}</AuthCtx>;

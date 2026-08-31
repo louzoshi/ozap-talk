@@ -36,7 +36,7 @@ public class RegistrationTests
     [InlineData("@acme.com")]
     public void User_create_rejects_invalid_email(string email)
     {
-        var act = () => User.Create(Guid.NewGuid(), email, "Name", "hash", MembershipRole.Agent);
+        var act = () => User.Create(Guid.NewGuid(), email, "Name", "hash", MembershipRole.Operator);
 
         act.Should().Throw<ArgumentException>();
     }
@@ -44,7 +44,7 @@ public class RegistrationTests
     [Fact]
     public void User_email_is_normalized_to_lowercase()
     {
-        var user = User.Create(Guid.NewGuid(), "  Owner@ACME.com ", "Name", "hash", MembershipRole.Agent);
+        var user = User.Create(Guid.NewGuid(), "  Owner@ACME.com ", "Name", "hash", MembershipRole.Operator);
 
         user.Email.Should().Be("owner@acme.com");
     }

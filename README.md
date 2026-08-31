@@ -191,6 +191,10 @@ Contributing workflow and the rules CI enforces: [`CONTRIBUTING.md`](CONTRIBUTIN
 - **Auth works.** Register a company, sign in, call authenticated endpoints. PBKDF2
   hashing, JWT, tenant isolation (EF Core global filter + write interceptor).
   See [`docs/seguranca.md`](docs/seguranca.md).
+- **Team management.** Four roles (Owner / Admin / Operator / Member), e-mail
+  invitations with a hashed accept token, role changes gated by a management-authority
+  rule. Role policies are enforced on the inbox and account endpoints. See
+  [`docs/papeis-e-permissoes.md`](docs/papeis-e-permissoes.md).
 - **R1 vertical slice is live.** Connect a WhatsApp number, receive webhooks
   (signature-checked, idempotent), and reply — inbound turns into a conversation,
   the agent's reply goes back out through the Graph API. A 3-column inbox UI (login
@@ -220,6 +224,7 @@ Detail and task lists: [`docs/roadmap.md`](docs/roadmap.md).
 | [`docs/roadmap.md`](docs/roadmap.md) | Releases R0–R5 with checklists |
 | [`docs/ambiente.md`](docs/ambiente.md) | Dev environment — Dev Container and per-OS native setup |
 | [`docs/seguranca.md`](docs/seguranca.md) | Auth model, password hashing, JWT, multi-tenancy — what's done and what's not |
+| [`docs/papeis-e-permissoes.md`](docs/papeis-e-permissoes.md) | Roles, the invitation flow, and where each policy is enforced |
 | [`docs/custos.md`](docs/custos.md) | Infrastructure & SaaS cost model |
 | [`docs/pagamentos.md`](docs/pagamentos.md) | Billing — PSP choice, Pix/card/installments, when to build the `Billing` module |
 | [`docs/custos-whatsapp.md`](docs/custos-whatsapp.md) | WhatsApp / Meta billing — what is paid, what is free, the 24-hour window, AI-agent token billing |

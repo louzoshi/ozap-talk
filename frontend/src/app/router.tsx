@@ -1,9 +1,12 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/shared/auth/AuthContext";
+import { RequireRole } from "@/shared/auth/RequireRole";
 import { AppShell } from "@/app/AppShell";
 import { LoginPage } from "@/features/auth/LoginPage";
 import { RegisterPage } from "@/features/auth/RegisterPage";
+import { AcceptInvitePage } from "@/features/auth/AcceptInvitePage";
 import { InboxPage } from "@/features/inbox/InboxPage";
+import { TeamPage } from "@/features/team/TeamPage";
 import { Placeholder } from "@/shared/Placeholder";
 
 function RequireAuth() {
@@ -15,6 +18,7 @@ function RequireAuth() {
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
+  { path: "/convite/:token", element: <AcceptInvitePage /> },
   {
     element: <RequireAuth />,
     children: [
@@ -27,6 +31,10 @@ export const router = createBrowserRouter([
           { path: "crm", element: <Placeholder title="CRM" /> },
           { path: "chatbot", element: <Placeholder title="ChatBot" /> },
           { path: "ai-agent", element: <Placeholder title="Agente IA" /> },
+          {
+            element: <RequireRole allow={["Owner", "Admin"]} />,
+            children: [{ path: "equipe", element: <TeamPage /> }],
+          },
         ],
       },
     ],

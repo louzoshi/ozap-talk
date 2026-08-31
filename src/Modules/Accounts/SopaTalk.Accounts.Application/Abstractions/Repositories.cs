@@ -1,4 +1,5 @@
 using SopaTalk.Accounts.Domain.Accounts;
+using SopaTalk.Accounts.Domain.Invitations;
 using SopaTalk.Accounts.Domain.Users;
 
 namespace SopaTalk.Accounts.Application.Abstractions;
@@ -18,7 +19,24 @@ public interface IUserRepository
     Task<User?> FindByEmailAsync(string normalizedEmail, CancellationToken ct);
 
     Task<User?> GetAsync(Guid userId, CancellationToken ct);
+
+    /// <summary>Todos os usuários do tenant em escopo, ativos ou não.</summary>
+    Task<IReadOnlyList<User>> ListByTenantAsync(CancellationToken ct);
+
     void Add(User user);
+}
+
+public interface IInvitationRepository
+{
+    /// <summary>Busca sem escopo de tenant — o aceite do convite é anônimo.</summary>
+    Task<Invitation?> FindByTokenHashAsync(string tokenHash, CancellationToken ct);
+
+    /// <summary>Há um convite pendente para este e-mail no tenant em escopo?</summary>
+    Task<bool> HasPendingForEmailAsync(string normalizedEmail, CancellationToken ct);
+
+    Task<IReadOnlyList<Invitation>> ListPendingAsync(CancellationToken ct);
+    Task<Invitation?> GetAsync(Guid invitationId, CancellationToken ct);
+    void Add(Invitation invitation);
 }
 
 /// <summary>Commits the module's unit of work (one transaction).</summary>

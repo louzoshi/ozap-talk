@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,6 +24,10 @@ builder.Host.UseSerilog((context, loggerConfig) => loggerConfig
 // --- Platform services ------------------------------------------------------
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
+
+// Enums trafegam como string ("Operator") no JSON da API, não como número.
+builder.Services.ConfigureHttpJsonOptions(options =>
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
 
@@ -81,6 +86,7 @@ builder.Services.AddAuthorizationBuilder()
     .SetFallbackPolicy(new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build())
+    .AddPolicy("operator", policy => policy.RequireRole("Owner", "Admin", "Operator"))
     .AddPolicy("admin", policy => policy.RequireRole("Owner", "Admin"))
     .AddPolicy("owner", policy => policy.RequireRole("Owner"));
 

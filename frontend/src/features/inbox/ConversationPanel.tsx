@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { inboxApi } from "@/features/inbox/api";
+import { useAuth } from "@/shared/auth/AuthContext";
 
 export function ConversationPanel({ conversationId }: { conversationId: string | null }) {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const canReply = user?.role !== "Member";
   const [draft, setDraft] = useState("");
   const threadRef = useRef<HTMLDivElement>(null);
 
@@ -51,11 +54,13 @@ export function ConversationPanel({ conversationId }: { conversationId: string |
           <div className="name">{thread?.contactName ?? "…"}</div>
           <div className="phone">{thread?.contactPhone}</div>
         </div>
-        <div className="actions">
-          <button title="Encerrar conversa" onClick={() => close.mutate()}>
-            ✓
-          </button>
-        </div>
+        {canReply && (
+          <div className="actions">
+            <button title="Encerrar conversa" onClick={() => close.mutate()}>
+              ✓
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="thread" ref={threadRef}>
@@ -78,29 +83,37 @@ export function ConversationPanel({ conversationId }: { conversationId: string |
         ))}
       </div>
 
-      <form
-        className="composer"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (draft.trim()) reply.mutate(draft.trim());
-        }}
-      >
-        <textarea
-          rows={1}
-          placeholder="Digite uma mensagem…"
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              if (draft.trim()) reply.mutate(draft.trim());
-            }
+      {!canReply && (
+        <p className="empty composer-locked">
+          Seu papel (Membro) permite acompanhar a conversa, mas não enviar mensagens.
+        </p>
+      )}
+
+      {canReply && (
+        <form
+          className="composer"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (draft.trim()) reply.mutate(draft.trim());
           }}
-        />
-        <button type="submit" disabled={!draft.trim() || reply.isPending}>
-          Enviar
-        </button>
-      </form>
+        >
+          <textarea
+            rows={1}
+            placeholder="Digite uma mensagem…"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                if (draft.trim()) reply.mutate(draft.trim());
+              }
+            }}
+          />
+          <button type="submit" disabled={!draft.trim() || reply.isPending}>
+            Enviar
+          </button>
+        </form>
+      )}
     </section>
   );
 }

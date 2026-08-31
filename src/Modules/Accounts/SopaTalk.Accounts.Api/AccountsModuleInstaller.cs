@@ -20,7 +20,11 @@ public sealed class AccountsModuleInstaller : IModuleInstaller
         return services;
     }
 
-    public void MapEndpoints(IEndpointRouteBuilder endpoints) => endpoints.MapAccountsEndpoints();
+    public void MapEndpoints(IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapAccountsEndpoints();
+        endpoints.MapTeamEndpoints();
+    }
 
     public async Task MigrateAsync(IServiceProvider services, CancellationToken ct)
     {

@@ -17,5 +17,8 @@ internal sealed class UserRepository(AccountsDbContext db) : IUserRepository
     public Task<User?> GetAsync(Guid userId, CancellationToken ct) =>
         db.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
 
+    public async Task<IReadOnlyList<User>> ListByTenantAsync(CancellationToken ct) =>
+        await db.Users.AsNoTracking().ToListAsync(ct);
+
     public void Add(User user) => db.Users.Add(user);
 }

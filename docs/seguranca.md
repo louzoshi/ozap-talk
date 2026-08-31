@@ -42,9 +42,10 @@ Para sobrescrever localmente sem tocar no arquivo: `dotnet user-secrets set "Jwt
 - **Fallback policy:** todo endpoint exige usuário autenticado por padrão. Endpoints
   públicos declaram `.AllowAnonymous()` explicitamente (`register`, `sessions`,
   `/health`, docs em dev, `_ping`).
-- **Políticas por papel:** `admin` (`Owner` ou `Admin`), `owner` (`Owner`). Papéis:
-  `Owner` (tudo, inclui financeiro), `Admin` (tudo menos financeiro), `Agent`
-  (só atendimento).
+- **Políticas por papel:** `operator` (`Owner`/`Admin`/`Operator`), `admin`
+  (`Owner`/`Admin`), `owner` (`Owner`, reservada para o financeiro). Papéis:
+  `Owner`, `Admin`, `Operator`, `Member`. Detalhes, alçada e fluxo de convite em
+  [`papeis-e-permissoes.md`](papeis-e-permissoes.md).
 
 ## Multi-tenancy (isolamento entre clientes)
 

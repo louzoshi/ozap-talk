@@ -17,7 +17,8 @@ Esqueleto do monólito modular, build verde, infra local.
 - [x] Serilog estruturado + health checks
 - [ ] Row-Level Security no Postgres (segunda barreira de tenancy)
 - [ ] Mediador CQRS próprio + pipeline de validação no lugar dos handlers diretos
-- [ ] Refresh token + revogação, 2FA, lockout no login, convite de usuário
+- [x] Papéis (Proprietário/Admin/Operador/Membro) + convite de usuário por e-mail
+- [ ] Refresh token + revogação, 2FA, lockout no login
 - [ ] Outbox para os integration events (entrega confiável)
 - [ ] Sentry
 - [ ] Pipeline CI (build + test + `dotnet list package --vulnerable`)

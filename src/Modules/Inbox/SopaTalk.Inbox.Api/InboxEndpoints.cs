@@ -32,28 +32,28 @@ internal static class InboxEndpoints
 
             var result = await handler.HandleAsync(new SendReplyCommand(id, body.Text, agentId), ct);
             return result.Match(messageId => Results.Accepted($"/api/inbox/messages/{messageId}", new { messageId }));
-        }).WithSummary("Send a reply in a conversation");
+        }).RequireAuthorization("operator").WithSummary("Send a reply in a conversation");
 
         group.MapPost("/conversations/{id:guid}/assign", async (
             Guid id, AssignBody body, AssignConversationHandler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(new AssignConversationCommand(id, body.AgentId), ct);
             return result.Match(Results.NoContent);
-        }).WithSummary("Assign a conversation to an agent");
+        }).RequireAuthorization("operator").WithSummary("Assign a conversation to an agent");
 
         group.MapPost("/conversations/{id:guid}/close", async (
             Guid id, CloseConversationHandler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(new CloseConversationCommand(id), ct);
             return result.Match(Results.NoContent);
-        }).WithSummary("Close a conversation");
+        }).RequireAuthorization("operator").WithSummary("Close a conversation");
 
         group.MapPost("/conversations/{id:guid}/read", async (
             Guid id, MarkConversationReadHandler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(new MarkConversationReadCommand(id), ct);
             return result.Match(Results.NoContent);
-        }).WithSummary("Reset the unread counter");
+        }).RequireAuthorization("operator").WithSummary("Reset the unread counter");
     }
 
     private static bool TryGetUserId(ClaimsPrincipal user, out Guid userId) =>

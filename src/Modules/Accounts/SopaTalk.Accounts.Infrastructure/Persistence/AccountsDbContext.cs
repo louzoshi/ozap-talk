@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SopaTalk.Accounts.Application.Abstractions;
 using SopaTalk.Accounts.Domain.Accounts;
+using SopaTalk.Accounts.Domain.Invitations;
 using SopaTalk.Accounts.Domain.Users;
 using SopaTalk.SharedKernel.MultiTenancy;
 using SopaTalk.SharedKernel.Persistence;
@@ -14,6 +15,7 @@ public sealed class AccountsDbContext(DbContextOptions<AccountsDbContext> option
 
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<User> Users => Set<User>();
+    public DbSet<Invitation> Invitations => Set<Invitation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,6 +24,7 @@ public sealed class AccountsDbContext(DbContextOptions<AccountsDbContext> option
 
         // User is tenant-owned; Account IS the tenant, so it is not filtered.
         modelBuilder.Entity<User>().HasQueryFilter(u => u.TenantId == CurrentTenantId);
+        modelBuilder.Entity<Invitation>().HasQueryFilter(i => i.TenantId == CurrentTenantId);
 
         base.OnModelCreating(modelBuilder);
     }

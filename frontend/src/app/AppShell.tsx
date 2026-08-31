@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/shared/auth/AuthContext";
+import { canManageTeam } from "@/shared/auth/roles";
 
 const nav = [
   { to: "/inbox", icon: "💬", label: "Inbox" },
@@ -11,11 +12,15 @@ const nav = [
 export function AppShell() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const items =
+    user && canManageTeam(user.role)
+      ? [...nav, { to: "/equipe", icon: "👥", label: "Equipe" }]
+      : nav;
 
   return (
     <div className="app">
       <nav className="rail">
-        {nav.map((item) => (
+        {items.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}

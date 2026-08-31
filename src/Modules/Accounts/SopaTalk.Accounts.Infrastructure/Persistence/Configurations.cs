@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SopaTalk.Accounts.Domain.Accounts;
+using SopaTalk.Accounts.Domain.Invitations;
 using SopaTalk.Accounts.Domain.Users;
 
 namespace SopaTalk.Accounts.Infrastructure.Persistence;
@@ -35,5 +36,25 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(u => u.Email).IsUnique();
         builder.HasIndex(u => u.TenantId);
         builder.Ignore(u => u.DomainEvents);
+    }
+}
+
+internal sealed class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
+{
+    public void Configure(EntityTypeBuilder<Invitation> builder)
+    {
+        builder.ToTable("invitations");
+        builder.HasKey(i => i.Id);
+        builder.Property(i => i.TenantId).IsRequired();
+        builder.Property(i => i.Email).HasMaxLength(256).IsRequired();
+        builder.Property(i => i.Role).HasConversion<string>().HasMaxLength(20);
+        builder.Property(i => i.Status).HasConversion<string>().HasMaxLength(20);
+        builder.Property(i => i.TokenHash).HasMaxLength(64).IsRequired();
+        builder.Property(i => i.InvitedByUserId).IsRequired();
+
+        builder.HasIndex(i => i.TokenHash).IsUnique();
+        builder.HasIndex(i => i.TenantId);
+        builder.HasIndex(i => i.Email);
+        builder.Ignore(i => i.DomainEvents);
     }
 }

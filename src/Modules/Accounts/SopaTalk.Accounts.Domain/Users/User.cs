@@ -6,14 +6,17 @@ namespace SopaTalk.Accounts.Domain.Users;
 
 public enum MembershipRole
 {
-    /// <summary>Full access, including billing. Exactly one per account.</summary>
+    /// <summary>Acesso total, incluindo o painel financeiro. Exatamente um por conta.</summary>
     Owner = 0,
 
-    /// <summary>Everything except billing.</summary>
+    /// <summary>Tudo na ferramenta, menos o painel financeiro.</summary>
     Admin = 1,
 
-    /// <summary>Handles conversations; no configuration.</summary>
-    Agent = 2,
+    /// <summary>Envia mensagens para contatos e ajusta configurações básicas de atendimento.</summary>
+    Operator = 2,
+
+    /// <summary>Somente leitura: não envia mensagens nem altera configurações.</summary>
+    Member = 3,
 }
 
 /// <summary>A person who signs in. Always belongs to exactly one account (tenant).</summary>
@@ -58,6 +61,19 @@ public sealed partial class User : AggregateRoot, ITenantOwned
 
     public void MarkSignedIn() => LastSignedInAtUtc = DateTimeOffset.UtcNow;
 
+    /// <summary>
+    /// Troca o papel do usuário. O papel <see cref="MembershipRole.Owner"/> é definido só no
+    /// registro da empresa (ou numa transferência de propriedade) e não pode ser atribuído aqui.
+    /// </summary>
+    public void ChangeRole(MembershipRole newRole)
+    {
+        if (newRole == MembershipRole.Owner)
+            throw new ArgumentException("O papel de proprietário não pode ser atribuído desta forma.", nameof(newRole));
+        Role = newRole;
+    }
+
+    public void Reactivate() => IsActive = true;
+
     public void ChangePassword(string newPasswordHash)
     {
         if (string.IsNullOrWhiteSpace(newPasswordHash))
@@ -68,6 +84,8 @@ public sealed partial class User : AggregateRoot, ITenantOwned
     public void Deactivate() => IsActive = false;
 
     public static string Normalize(string email) => email.Trim().ToLowerInvariant();
+
+    public static bool IsValidEmail(string email) => EmailPattern().IsMatch(Normalize(email));
 
     [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
     private static partial Regex EmailPattern();
