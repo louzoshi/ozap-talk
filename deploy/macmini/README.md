@@ -30,9 +30,9 @@ Além disso, hoje o produto:
 - **envia só texto.** Mídia (foto, áudio, PDF) e template (HSM) estão no R1, ainda abertos.
 - **só responde dentro da janela de 24h.** Fora dela a Meta exige template aprovado.
   Ou seja: o cliente precisa ter falado primeiro.
-- **manda convite de time por log, não por e-mail.** O `IInvitationEmailSender` em
-  produção é o `LoggingInvitationEmailSender`: o link sai no `api.log`. Para 5 pessoas
-  resolve — você copia e manda no grupo. Ver "Convidar o time" abaixo.
+- **não envia e-mail de convite.** O `IInvitationEmailSender` registrado é o
+  `LoggingInvitationEmailSender`. A tela de Equipe mostra o link de aceite na hora em
+  que você convida — você copia e manda no WhatsApp. Para 5 pessoas resolve.
 - **não tem refresh token.** O JWT expira em 60 min e o time faz login de novo.
 
 Nada disso bloqueia o começo, mas é melhor saber antes do que descobrir na segunda-feira.
@@ -116,17 +116,22 @@ Detalhes e o caminho de teste com número da sandbox: `docs/whatsapp-teste.md`.
 
 ## 5. Convidar o time
 
-O dono se cadastra pela tela de cadastro. Para os outros 4:
+O dono se cadastra pela tela de cadastro (`/register`) — é ele quem cria a empresa.
+Para os outros 4, em **Equipe** (visível para Proprietário e Admin):
 
-1. Convide pela API/tela de time (papéis em `docs/papeis-e-permissoes.md` — para
-   atendimento, use **Operador**).
-2. Pegue o link no log:
+1. Convide por e-mail e papel. Para atendimento, use **Operador**
+   (papéis em `docs/papeis-e-permissoes.md`).
+2. O diálogo mostra o link de aceite — copie e mande para a pessoa.
+   O convite vale **72 horas**.
+3. Ela abre o link, escolhe o nome e **define a própria senha** (mínimo 8 caracteres),
+   e já entra logada.
+
+Não existe "senha padrão" definida pelo administrador: cada pessoa cria a sua no
+aceite do convite. Se o link se perder, ele também sai no log:
 
 ```bash
-grep -i invit /usr/local/sopa-talk/logs/api.log | tail -5
+grep -i convite /usr/local/sopa-talk/logs/api.log | tail -5
 ```
-
-3. Mande o link para a pessoa. Ela define a senha e entra.
 
 ---
 
