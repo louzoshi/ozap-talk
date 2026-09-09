@@ -1,0 +1,18 @@
+# Configuração do túnel. Copiar para $SOPA_HOME/etc/cloudflared.yml e ajustar
+# o tunnel, o credentials-file e o hostname.
+#
+#   cloudflared tunnel login
+#   cloudflared tunnel create sopa-talk
+#   cloudflared tunnel route dns sopa-talk atendimento.suaempresa.com.br
+
+tunnel: sopa-talk
+credentials-file: /Users/SEU_USUARIO/.cloudflared/SEU-TUNNEL-ID.json
+
+ingress:
+  - hostname: atendimento.suaempresa.com.br
+    service: http://127.0.0.1:5080
+    originRequest:
+      # A inbox usa WebSocket (SignalR); sem isso o realtime cai para long polling.
+      noTLSVerify: false
+      connectTimeout: 10s
+  - service: http_status:404

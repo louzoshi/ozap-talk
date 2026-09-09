@@ -108,7 +108,8 @@ src/
     AiAgent/               knowledge base, skills, handoff
     (each module: Domain / Application / Infrastructure / Api)
 frontend/                  React + Vite SPA
-infra/                     docker-compose (PostgreSQL + Valkey)
+infra/                     docker-compose (PostgreSQL + Valkey) — local development only
+deploy/macmini/            single-box production deploy (launchd, Cloudflare Tunnel, backups)
 tests/
   SopaTalk.Inbox.UnitTests/       domain unit tests
   SopaTalk.ArchitectureTests/     module-boundary enforcement
@@ -203,6 +204,20 @@ Contributing workflow and the rules CI enforces: [`CONTRIBUTING.md`](CONTRIBUTIN
 - **Still to do:** media & template messages, teams/queues/tags, refresh tokens,
   2FA, login lockout, Row-Level Security, a CQRS dispatcher, the outbox, CI.
 
+## Deploy
+
+A single Mac mini runs the whole product: PostgreSQL, one .NET process (the API hosts
+the Hangfire server, so there is no separate worker), and a Cloudflare Tunnel for the
+public HTTPS URL the Meta webhook needs. No Docker, no Redis.
+
+```bash
+./deploy/macmini/setup.sh      # once: dependencies, database, secrets, launchd services
+./deploy/macmini/publish.sh    # build the SPA + API, swap the app, restart
+```
+
+Step-by-step, WhatsApp number caveats and day-to-day operation:
+[`deploy/macmini/README.md`](deploy/macmini/README.md).
+
 ## Roadmap
 
 | Release | Theme | Highlights |
@@ -223,6 +238,7 @@ Detail and task lists: [`docs/roadmap.md`](docs/roadmap.md).
 | [`docs/arquitetura.md`](docs/arquitetura.md) | Architecture, modules, layering, boundary rules |
 | [`docs/roadmap.md`](docs/roadmap.md) | Releases R0–R5 with checklists |
 | [`docs/ambiente.md`](docs/ambiente.md) | Dev environment — Dev Container and per-OS native setup |
+| [`deploy/macmini/README.md`](deploy/macmini/README.md) | Single-box production deploy — setup, publish, tunnel, backups, operation |
 | [`docs/seguranca.md`](docs/seguranca.md) | Auth model, password hashing, JWT, multi-tenancy — what's done and what's not |
 | [`docs/papeis-e-permissoes.md`](docs/papeis-e-permissoes.md) | Roles, the invitation flow, and where each policy is enforced |
 | [`docs/custos.md`](docs/custos.md) | Infrastructure & SaaS cost model |

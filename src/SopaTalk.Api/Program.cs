@@ -42,8 +42,12 @@ builder.Services.AddScoped<IIntegrationEventHandler<ConversationChanged>, Conver
 
 // --- Authentication / authorization ----------------------------------------
 var jwt = builder.Configuration.GetSection("Jwt");
-var signingKey = jwt["SigningKey"]
-    ?? throw new InvalidOperationException("Jwt:SigningKey is not configured (use user-secrets in dev).");
+var signingKey = jwt["SigningKey"];
+if (string.IsNullOrWhiteSpace(signingKey))
+{
+    throw new InvalidOperationException(
+        "Jwt:SigningKey is not configured (user-secrets in dev, Jwt__SigningKey in production).");
+}
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -107,7 +111,9 @@ foreach (var module in ModuleRegistry.All)
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+// As migrations sobem junto com o app quando Database:MigrateOnStartup está ligado — é o
+// caso do deploy de instância única (ver deploy/macmini). Em Development, sempre roda.
+if (app.Environment.IsDevelopment() || app.Configuration.GetValue<bool>("Database:MigrateOnStartup"))
 {
     foreach (var module in ModuleRegistry.All)
     {
