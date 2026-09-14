@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SopaTalk.SharedKernel.Jobs;
 
 namespace SopaTalk.SharedKernel.Modules;
 
@@ -19,6 +20,12 @@ public interface IModuleInstaller
 
     /// <summary>Map the module's HTTP endpoints under its own route group.</summary>
     void MapEndpoints(IEndpointRouteBuilder endpoints);
+
+    /// <summary>
+    /// Declara os jobs recorrentes do módulo. O host passa o registro já ligado ao
+    /// agendador; o módulo só diz o que roda e quando. No-op por padrão.
+    /// </summary>
+    void RegisterRecurringJobs(IRecurringJobRegistry jobs) { }
 
     /// <summary>
     /// Apply the module's EF Core migrations. Called by the host on startup in Development,

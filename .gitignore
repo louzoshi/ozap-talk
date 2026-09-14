@@ -506,3 +506,6 @@ secrets.json
 infra/**/data/
 *.dump
 *.sql.gz
+
+# E-mails gravados pelo remetente de desenvolvimento
+**/tmp/emails/

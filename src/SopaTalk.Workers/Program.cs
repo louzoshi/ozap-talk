@@ -9,6 +9,7 @@ using SopaTalk.Crm.Infrastructure;
 using SopaTalk.Inbox.Infrastructure;
 using SopaTalk.SharedKernel.Messaging;
 using SopaTalk.SharedKernel.MultiTenancy;
+using SopaTalk.SharedKernel.Notifications;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddScoped<TenantContext>();
 builder.Services.AddScoped<ITenantContext>(sp => sp.GetRequiredService<TenantContext>());
 builder.Services.AddScoped<ISettableTenantContext>(sp => sp.GetRequiredService<TenantContext>());
 
+builder.Services.AddEmail(builder.Configuration);
 builder.Services.AddInProcessEventBus();
 
 // This process runs background jobs only — it registers each module's infrastructure

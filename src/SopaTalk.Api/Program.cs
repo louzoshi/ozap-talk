@@ -7,11 +7,13 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 using SopaTalk.Api;
+using SopaTalk.Api.Jobs;
 using SopaTalk.Api.Realtime;
 using SopaTalk.Api.Security;
 using SopaTalk.SharedContracts.Inbox;
 using SopaTalk.SharedKernel.Messaging;
 using SopaTalk.SharedKernel.MultiTenancy;
+using SopaTalk.SharedKernel.Notifications;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +105,8 @@ builder.Services.AddHangfire(config => config
     .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(connectionString)));
 builder.Services.AddHangfireServer();
 
+builder.Services.AddEmail(builder.Configuration);
+
 // --- Modules -------------------------------------------------------------
 foreach (var module in ModuleRegistry.All)
 {
@@ -118,6 +122,20 @@ if (app.Environment.IsDevelopment() || app.Configuration.GetValue<bool>("Databas
     foreach (var module in ModuleRegistry.All)
     {
         await module.MigrateAsync(app.Services, CancellationToken.None);
+    }
+}
+
+// Cada módulo declara seus jobs recorrentes; o host só empresta o agendador. O
+// agendamento vive no Postgres, então registrar aqui basta — o SopaTalk.Workers executa
+// o que estiver na fila sem precisar registrar de novo.
+using (var scope = app.Services.CreateScope())
+{
+    var registry = new HangfireRecurringJobRegistry(
+        scope.ServiceProvider.GetRequiredService<IRecurringJobManager>());
+
+    foreach (var module in ModuleRegistry.All)
+    {
+        module.RegisterRecurringJobs(registry);
     }
 }
 

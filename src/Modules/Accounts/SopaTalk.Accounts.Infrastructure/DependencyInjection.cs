@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SopaTalk.Accounts.Application.Abstractions;
+using SopaTalk.Accounts.Infrastructure.Jobs;
 using SopaTalk.Accounts.Infrastructure.Notifications;
 using SopaTalk.Accounts.Infrastructure.Persistence;
 using SopaTalk.Accounts.Infrastructure.Security;
@@ -30,7 +31,9 @@ public static class DependencyInjection
         services.AddSingleton<IAccessTokenIssuer, JwtAccessTokenIssuer>();
         services.AddSingleton<IInvitationTokens, InvitationTokens>();
         services.AddSingleton<IInviteLinkBuilder, InviteLinkBuilder>();
-        services.AddScoped<IInvitationEmailSender, LoggingInvitationEmailSender>();
+        services.AddScoped<IInvitationEmailSender, InvitationEmailSender>();
+
+        services.AddScoped<WeeklyDigestJob>();
 
         services.AddOptions<AccountsOptions>()
             .Bind(configuration.GetSection(AccountsOptions.SectionName));
