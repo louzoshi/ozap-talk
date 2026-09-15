@@ -17,7 +17,7 @@ que ele pode fazer na ferramenta. Modelo espelhado do Umbler Talk.
 
 ## Alçada — quem gerencia quem
 
-`SopaTalk.Accounts.Domain.Users.MembershipRules.CanManage(ator, alvo)`:
+`OzapTalk.Accounts.Domain.Users.MembershipRules.CanManage(ator, alvo)`:
 
 - **Owner** gerencia todos, menos outro Owner.
 - **Admin** gerencia apenas `Operator` e `Member` (não mexe em Admin nem Owner).
@@ -56,7 +56,7 @@ sem escopo de tenant): um e-mail já usado em qualquer conta não pode ser convi
 
 ## Onde as permissões são aplicadas
 
-Policies em `src/SopaTalk.Api/Program.cs` (a partir do claim `role` do JWT):
+Policies em `src/OzapTalk.Api/Program.cs` (a partir do claim `role` do JWT):
 
 | Policy | Papéis | Usada em |
 |---|---|---|

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="..\OzapTalk.SharedKernel\OzapTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\Modules\Channels\OzapTalk.Channels.Api\OzapTalk.Channels.Api.csproj" />
+    <ProjectReference Include="..\Modules\Inbox\OzapTalk.Inbox.Api\OzapTalk.Inbox.Api.csproj" />
+    <ProjectReference Include="..\Modules\Crm\OzapTalk.Crm.Api\OzapTalk.Crm.Api.csproj" />
+    <ProjectReference Include="..\Modules\Chatbot\OzapTalk.Chatbot.Api\OzapTalk.Chatbot.Api.csproj" />
+    <ProjectReference Include="..\Modules\AiAgent\OzapTalk.AiAgent.Api\OzapTalk.AiAgent.Api.csproj" />
+    <ProjectReference Include="..\Modules\Accounts\OzapTalk.Accounts.Api\OzapTalk.Accounts.Api.csproj" />
+    <ProjectReference Include="..\OzapTalk.SharedContracts\OzapTalk.SharedContracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Scalar.AspNetCore" />
+    <PackageReference Include="Hangfire.AspNetCore" />
+    <PackageReference Include="Hangfire.PostgreSql" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+  </ItemGroup>
+</Project>

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
 # Wrapper que o launchd executa: carrega os segredos e entrega o processo à API.
-# Instalado pelo setup.sh em __SOPA_HOME__/bin/run-api.sh.
+# Instalado pelo setup.sh em __OZAP_HOME__/bin/run-api.sh.
 #
 set -euo pipefail
 
-SOPA_HOME="__SOPA_HOME__"
-ENV_FILE="$SOPA_HOME/etc/sopa-talk.env"
+OZAP_HOME="__OZAP_HOME__"
+ENV_FILE="$OZAP_HOME/etc/ozap-talk.env"
 
 export PATH="__BREW_PREFIX__/bin:__BREW_PREFIX__/opt/__PG_FORMULA__/bin:/usr/local/share/dotnet:/usr/bin:/bin:/usr/sbin:/sbin"
 
@@ -33,5 +33,5 @@ for _ in $(seq 1 60); do
   sleep 2
 done
 
-cd "$SOPA_HOME/app"
-exec ./SopaTalk.Api
+cd "$OZAP_HOME/app"
+exec ./OzapTalk.Api

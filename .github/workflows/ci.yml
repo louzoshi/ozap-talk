@@ -31,26 +31,26 @@ jobs:
           restore-keys: nuget-${{ runner.os }}-
 
       - name: Restore
-        run: dotnet restore SopaTalk.slnx
+        run: dotnet restore OzapTalk.slnx
 
       - name: Verify formatting
-        run: dotnet format SopaTalk.slnx --verify-no-changes --no-restore
+        run: dotnet format OzapTalk.slnx --verify-no-changes --no-restore
 
       - name: Build
-        run: dotnet build SopaTalk.slnx --configuration Release --no-restore
+        run: dotnet build OzapTalk.slnx --configuration Release --no-restore
 
       # No fixed LogFileName: each test project must produce its own .trx,
       # otherwise they overwrite one another and only the last one survives.
       - name: Test
         run: >
-          dotnet test SopaTalk.slnx --configuration Release --no-build
+          dotnet test OzapTalk.slnx --configuration Release --no-build
           --logger trx --results-directory TestResults
 
       # Advisories do not fail the build (see WarningsNotAsErrors in
       # Directory.Build.props); this step keeps them visible in the run log.
       - name: List vulnerable packages
         if: always()
-        run: dotnet list SopaTalk.slnx package --vulnerable --include-transitive
+        run: dotnet list OzapTalk.slnx package --vulnerable --include-transitive
 
       - name: Upload test results
         if: always()

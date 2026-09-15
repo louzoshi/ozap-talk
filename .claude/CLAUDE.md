@@ -1,4 +1,4 @@
-# sopa-talk
+# ozap-talk
 
 Plataforma de atendimento multicanal via WhatsApp — clone funcional do Umbler Talk
 (<https://a.umbler.com/br/talk/>). Produto real, feito para receber clientes pagantes.
@@ -35,18 +35,18 @@ Módulos: `Accounts` (empresas, usuários, login, JWT, tenancy), `Channels` (Wha
 Cloud API), `Inbox` (multiatendimento), `Crm`, `Chatbot`, `AiAgent`. Cada módulo tem
 4 projetos: `Domain`, `Application`, `Infrastructure`, `Api`.
 
-`SopaTalk.SharedKernel.Persistence`: base EF Core comum (`TenantDbContext`,
+`OzapTalk.SharedKernel.Persistence`: base EF Core comum (`TenantDbContext`,
 `TenantSaveChangesInterceptor`). Segurança e tenancy: `docs/seguranca.md`.
 
 ### Regras que não se quebram
 
 1. Um módulo **nunca** acessa o DbContext, as tabelas ou os tipos internos de outro.
-   Comunicação entre módulos só por **integration events** (`SopaTalk.SharedKernel.Messaging`).
+   Comunicação entre módulos só por **integration events** (`OzapTalk.SharedKernel.Messaging`).
 2. `Domain` não referencia EF Core, HTTP, SDKs externos. Isso vive em `Infrastructure`.
 3. Toda entidade persistente carrega `TenantId`. Filtro global no EF Core **e**
    Row-Level Security no Postgres. Nunca confie só em um.
 4. Webhooks da Meta são processados de forma **idempotente** (chave de deduplicação).
-5. Cada módulo se registra sozinho via seu `IModuleInstaller`. O host (`SopaTalk.Api`)
+5. Cada módulo se registra sozinho via seu `IModuleInstaller`. O host (`OzapTalk.Api`)
    só compõe — não conhece o interior de nenhum módulo.
 6. Handlers retornam `Result` para desfechos de negócio esperados; exceção só para o
    excepcional.
@@ -69,16 +69,16 @@ por SO em `docs/ambiente.md`. Versões fixadas: `global.json` (.NET), `.nvmrc` (
 
 ```bash
 dotnet tool restore                                # dotnet-ef na versão do time
-dotnet restore SopaTalk.slnx
+dotnet restore OzapTalk.slnx
 npm --prefix frontend ci
 
 docker compose -f infra/docker-compose.yml up -d   # Postgres + Valkey locais
-dotnet build SopaTalk.slnx
-dotnet test SopaTalk.slnx
-dotnet format SopaTalk.slnx                         # formatar C# antes de commitar
+dotnet build OzapTalk.slnx
+dotnet test OzapTalk.slnx
+dotnet format OzapTalk.slnx                         # formatar C# antes de commitar
 
-dotnet run --project src/SopaTalk.Api              # http://localhost:5080  (jobs em /jobs)
-dotnet run --project src/SopaTalk.Workers          # processador de jobs
+dotnet run --project src/OzapTalk.Api              # http://localhost:5080  (jobs em /jobs)
+dotnet run --project src/OzapTalk.Workers          # processador de jobs
 npm --prefix frontend run dev                      # SPA em http://localhost:5173
 npm --prefix frontend run lint                     # eslint
 ```

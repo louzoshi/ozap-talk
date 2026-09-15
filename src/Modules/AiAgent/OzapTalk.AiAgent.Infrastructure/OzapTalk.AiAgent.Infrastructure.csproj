@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\OzapTalk.AiAgent.Application\OzapTalk.AiAgent.Application.csproj" />
+    <ProjectReference Include="..\OzapTalk.AiAgent.Domain\OzapTalk.AiAgent.Domain.csproj" />
+    <ProjectReference Include="..\..\..\OzapTalk.SharedKernel\OzapTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\OzapTalk.SharedKernel.Persistence\OzapTalk.SharedKernel.Persistence.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+  </ItemGroup>
+</Project>

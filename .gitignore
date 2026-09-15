@@ -481,10 +481,10 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-## sopa-talk
+## ozap-talk
 frontend/node_modules/
 frontend/dist/
-src/SopaTalk.Api/wwwroot/
+src/OzapTalk.Api/wwwroot/
 
 # Secrets & environment overrides — only local dev defaults are committed
 # (appsettings.json). Real values come from user-secrets, env vars or the files below.

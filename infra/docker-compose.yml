@@ -1,19 +1,19 @@
 # Local development dependencies. Not a production topology — see docs/custos.md.
-name: sopa-talk
+name: ozap-talk
 
 services:
   postgres:
     image: postgres:17-alpine
     environment:
-      POSTGRES_DB: sopatalk
-      POSTGRES_USER: sopatalk
-      POSTGRES_PASSWORD: sopatalk
+      POSTGRES_DB: ozaptalk
+      POSTGRES_USER: ozaptalk
+      POSTGRES_PASSWORD: ozaptalk
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sopatalk"]
+      test: ["CMD-SHELL", "pg_isready -U ozaptalk"]
       interval: 5s
       timeout: 5s
       retries: 10

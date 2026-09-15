@@ -6,8 +6,8 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/SopaTalk.Api/bin/Debug/net10.0/SopaTalk.Api.dll",
-      "cwd": "${workspaceFolder}/src/SopaTalk.Api",
+      "program": "${workspaceFolder}/src/OzapTalk.Api/bin/Debug/net10.0/OzapTalk.Api.dll",
+      "cwd": "${workspaceFolder}/src/OzapTalk.Api",
       "env": { "ASPNETCORE_ENVIRONMENT": "Development" },
       "serverReadyAction": {
         "action": "openExternally",
@@ -20,8 +20,8 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/SopaTalk.Workers/bin/Debug/net10.0/SopaTalk.Workers.dll",
-      "cwd": "${workspaceFolder}/src/SopaTalk.Workers",
+      "program": "${workspaceFolder}/src/OzapTalk.Workers/bin/Debug/net10.0/OzapTalk.Workers.dll",
+      "cwd": "${workspaceFolder}/src/OzapTalk.Workers",
       "env": { "DOTNET_ENVIRONMENT": "Development" },
       "console": "integratedTerminal"
     }

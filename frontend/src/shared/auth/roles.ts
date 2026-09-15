@@ -18,7 +18,7 @@ export const ROLE_DESCRIPTIONS: Record<MembershipRole, string> = {
     "Não é capaz de alterar nenhuma configuração, e não consegue enviar mensagens para contatos.",
 };
 
-/** Espelha SopaTalk.Accounts.Domain.Users.MembershipRules.CanManage. */
+/** Espelha OzapTalk.Accounts.Domain.Users.MembershipRules.CanManage. */
 export function canManage(actor: MembershipRole, target: MembershipRole): boolean {
   if (actor === "Owner") return target !== "Owner";
   if (actor === "Admin") return target === "Operator" || target === "Member";

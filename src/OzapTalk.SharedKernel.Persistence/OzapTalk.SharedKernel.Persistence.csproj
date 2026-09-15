@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- EF Core building blocks shared by every module's Infrastructure: the tenant
+       interceptor, model-builder helpers, domain-event dispatch on SaveChanges.
+       Kept out of OzapTalk.SharedKernel so the domain never sees EF Core. -->
+  <ItemGroup>
+    <ProjectReference Include="..\OzapTalk.SharedKernel\OzapTalk.SharedKernel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+  </ItemGroup>
+</Project>

@@ -8,11 +8,11 @@
 #
 set -euo pipefail
 
-SOPA_HOME="${SOPA_HOME:-/usr/local/sopa-talk}"
+OZAP_HOME="${OZAP_HOME:-/usr/local/ozap-talk}"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-SERVICE="team.sopa.talk.api"
-STAGING="$SOPA_HOME/app.new"
-PREVIOUS="$SOPA_HOME/app.previous"
+SERVICE="com.ozaptalk.api"
+STAGING="$OZAP_HOME/app.new"
+PREVIOUS="$OZAP_HOME/app.previous"
 
 log() { printf '\n\033[1m==> %s\033[0m\n' "$*"; }
 die() { printf '\033[31mx  %s\033[0m\n' "$*" >&2; exit 1; }
@@ -26,7 +26,7 @@ case "$(uname -m)" in
   *) die "Arquitetura não suportada: $(uname -m)" ;;
 esac
 
-[ -d "$SOPA_HOME" ] || die "$SOPA_HOME não existe. Rode o setup.sh primeiro."
+[ -d "$OZAP_HOME" ] || die "$OZAP_HOME não existe. Rode o setup.sh primeiro."
 
 cd "$REPO_ROOT"
 
@@ -36,18 +36,18 @@ npm --prefix frontend run build
 
 log "Backend ($RID)"
 rm -rf "$STAGING"
-dotnet publish src/SopaTalk.Api \
+dotnet publish src/OzapTalk.Api \
   -c Release \
   -r "$RID" \
   --no-self-contained \
   -o "$STAGING"
 
-[ -x "$STAGING/SopaTalk.Api" ] || die "Publicação não gerou o executável."
+[ -x "$STAGING/OzapTalk.Api" ] || die "Publicação não gerou o executável."
 
 log "Trocando a versão no ar"
 rm -rf "$PREVIOUS"
-[ -d "$SOPA_HOME/app" ] && mv "$SOPA_HOME/app" "$PREVIOUS"
-mv "$STAGING" "$SOPA_HOME/app"
+[ -d "$OZAP_HOME/app" ] && mv "$OZAP_HOME/app" "$PREVIOUS"
+mv "$STAGING" "$OZAP_HOME/app"
 
 log "Reiniciando $SERVICE"
 launchctl kickstart -k "gui/$(id -u)/$SERVICE"
@@ -62,8 +62,8 @@ for _ in $(seq 1 60); do
 done
 
 printf '\033[31mo app não respondeu em 60s.\033[0m Últimas linhas do log:\n\n'
-tail -n 40 "$SOPA_HOME/logs/api.log" || true
+tail -n 40 "$OZAP_HOME/logs/api.log" || true
 printf '\nPara voltar à versão anterior:\n'
 printf '  rm -rf %s/app && mv %s %s/app && launchctl kickstart -k gui/%s/%s\n' \
-  "$SOPA_HOME" "$PREVIOUS" "$SOPA_HOME" "$(id -u)" "$SERVICE"
+  "$OZAP_HOME" "$PREVIOUS" "$OZAP_HOME" "$(id -u)" "$SERVICE"
 exit 1

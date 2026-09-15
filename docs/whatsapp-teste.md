@@ -1,4 +1,4 @@
-# WhatsApp para testar o sopa-talk
+# WhatsApp para testar o ozap-talk
 
 > **Você NUNCA usa seu número pessoal.** Assim que um número entra na WhatsApp Cloud
 > API, ele **não funciona mais** no app comum do WhatsApp / WhatsApp Business. Receber
@@ -67,7 +67,7 @@ O `.gitignore` já bloqueia `appsettings.*.local.json` e `.env`.
 
 ### Fluxo ponta a ponta (dev)
 
-1. `Channels__WebhookVerifyToken` e `Channels__AppSecret` nos user-secrets do `SopaTalk.Api`
+1. `Channels__WebhookVerifyToken` e `Channels__AppSecret` nos user-secrets do `OzapTalk.Api`
 2. `cloudflared tunnel --url http://localhost:5080` → URL pública
 3. No painel da Meta: webhook = `https://<tunnel>/api/channels/webhook`, verify token = o mesmo
 4. `POST /api/channels` com o `phoneNumberId` + `accessToken` do número de teste

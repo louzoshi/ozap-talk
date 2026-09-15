@@ -5,7 +5,7 @@
 
 ## Contexto
 
-sopa-talk é SaaS B2B: cada cliente (empresa) é um tenant, e o sistema processa dado
+ozap-talk é SaaS B2B: cada cliente (empresa) é um tenant, e o sistema processa dado
 pessoal dos clientes **dos** clientes (LGPD). Vazamento de dados entre tenants é o
 pior defeito possível e não é corrigível "depois" — a decisão precisa estar certa
 desde a primeira migration.

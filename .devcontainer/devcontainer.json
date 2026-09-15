@@ -1,5 +1,5 @@
 {
-  "name": "sopa-talk",
+  "name": "ozap-talk",
 
   // .NET 10 SDK image maintained by the Dev Containers team. If this tag ever fails
   // to pull, bump it (see https://mcr.microsoft.com/artifact/mar/devcontainers/dotnet/tags).
@@ -18,7 +18,7 @@
   // host.docker.internal (the Dev Containers CLI wires the host-gateway alias).
   "containerEnv": {
     "ASPNETCORE_ENVIRONMENT": "Development",
-    "ConnectionStrings__Database": "Host=host.docker.internal;Port=5432;Database=sopatalk;Username=sopatalk;Password=sopatalk",
+    "ConnectionStrings__Database": "Host=host.docker.internal;Port=5432;Database=ozaptalk;Username=ozaptalk;Password=ozaptalk",
     "ConnectionStrings__Redis": "host.docker.internal:6379"
   },
 
@@ -29,7 +29,7 @@
   },
 
   "onCreateCommand": "dotnet tool restore",
-  "postCreateCommand": "dotnet restore SopaTalk.slnx && npm --prefix frontend ci",
+  "postCreateCommand": "dotnet restore OzapTalk.slnx && npm --prefix frontend ci",
   "postStartCommand": "docker compose -f infra/docker-compose.yml up -d",
 
   "customizations": {

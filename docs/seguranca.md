@@ -1,4 +1,4 @@
-# Segurança — sopa-talk
+# Segurança — ozap-talk
 
 Estado do que está implementado. O que falta está marcado como TODO e no `roadmap.md`.
 
@@ -32,10 +32,10 @@ o e-mail ou a senha.
 
 | Ambiente | Onde | Valor |
 |---|---|---|
-| Development | `src/SopaTalk.Api/appsettings.Development.json` | chave fixa de dev (não é segredo, versionada de propósito) |
+| Development | `src/OzapTalk.Api/appsettings.Development.json` | chave fixa de dev (não é segredo, versionada de propósito) |
 | Produção / staging | variável de ambiente `Jwt__SigningKey` ou secret manager | **≥ 32 chars, aleatória, única por ambiente** |
 
-Para sobrescrever localmente sem tocar no arquivo: `dotnet user-secrets set "Jwt:SigningKey" "<valor>" --project src/SopaTalk.Api`.
+Para sobrescrever localmente sem tocar no arquivo: `dotnet user-secrets set "Jwt:SigningKey" "<valor>" --project src/OzapTalk.Api`.
 
 ## Autorização
 

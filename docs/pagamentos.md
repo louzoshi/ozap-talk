@@ -1,4 +1,4 @@
-# Pagamentos e cobrança — sopa-talk
+# Pagamentos e cobrança — ozap-talk
 
 ## Decisões
 
@@ -10,7 +10,7 @@ um módulo do monólito: `Billing`, schema `billing`. **Não** é serviço separ
 
 ### 2. Nunca construímos um processador de pagamento
 
-Integramos um **PSP / gateway**. O sopa-talk **nunca toca em número de cartão** —
+Integramos um **PSP / gateway**. O ozap-talk **nunca toca em número de cartão** —
 usa checkout hospedado / campos tokenizados do PSP, mantendo o escopo PCI no mínimo
 (SAQ-A). O PSP cuida de: cobrança recorrente, Pix, boleto, cartão, **parcelamento**,
 antifraude, liquidação.
@@ -40,7 +40,7 @@ Recomendação inicial: **Stripe** se a qualidade de API/webhooks pesa mais;
 ### 5. Parcelamento
 
 É recurso de cartão, o PSP resolve. Decidir por plano: **parcelado sem juros**
-(sopa-talk absorve a taxa) ou **com juros** (repassado ao cliente). Normalmente só
+(ozap-talk absorve a taxa) ou **com juros** (repassado ao cliente). Normalmente só
 faz sentido em plano anual.
 
 ## O que o módulo `Billing` vai conter

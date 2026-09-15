@@ -1,7 +1,7 @@
 // Thin fetch wrapper. Same-origin in dev (via Vite proxy) and in production
 // (SPA served by the ASP.NET host), so no base URL is needed.
 
-const TOKEN_KEY = "sopatalk.token";
+const TOKEN_KEY = "ozaptalk.token";
 
 export const tokenStore = {
   get: () => localStorage.getItem(TOKEN_KEY),

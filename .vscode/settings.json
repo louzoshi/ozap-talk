@@ -1,5 +1,5 @@
 {
-  "dotnet.defaultSolution": "SopaTalk.slnx",
+  "dotnet.defaultSolution": "OzapTalk.slnx",
 
   "editor.formatOnSave": true,
   "files.eol": "\n",
@@ -25,7 +25,7 @@
     "**/bin": true,
     "**/obj": true,
     "**/node_modules": true,
-    "src/SopaTalk.Api/wwwroot": true
+    "src/OzapTalk.Api/wwwroot": true
   },
   "files.watcherExclude": {
     "**/bin/**": true,

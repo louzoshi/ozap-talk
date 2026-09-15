@@ -5,10 +5,10 @@ sem processo de workers separado — a API já roda o Hangfire dentro dela.
 
 | | |
 |---|---|
-| App | `/usr/local/sopa-talk/app` |
-| Segredos | `/usr/local/sopa-talk/etc/sopa-talk.env` (600) |
-| Logs | `/usr/local/sopa-talk/logs/api.log` |
-| Backups | `/usr/local/sopa-talk/backups` (14 dias) |
+| App | `/usr/local/ozap-talk/app` |
+| Segredos | `/usr/local/ozap-talk/etc/ozap-talk.env` (600) |
+| Logs | `/usr/local/ozap-talk/logs/api.log` |
+| Backups | `/usr/local/ozap-talk/backups` (14 dias) |
 | Porta interna | `127.0.0.1:5080` |
 
 Os serviços rodam como **LaunchAgent** do seu usuário, não como daemon de root: é
@@ -22,7 +22,7 @@ _Ajustes do Sistema › Usuários e Grupos › Opções de início de sessão_.
 
 Migrar o número da empresa para a **WhatsApp Cloud API** é irreversível na prática:
 depois disso o número **para de funcionar no app WhatsApp e no WhatsApp Business**
-do celular. Todo o atendimento passa a acontecer só pela sopa-talk. Não existe meio
+do celular. Todo o atendimento passa a acontecer só pela ozap-talk. Não existe meio
 caminho — o número está na API ou no app, nunca nos dois.
 
 Além disso, hoje o produto:
@@ -48,11 +48,11 @@ No Mac mini, com o repositório clonado:
 ```
 
 O script instala as dependências (`dotnet-sdk`, `node@22`, `postgresql@17`,
-`cloudflared`), cria os diretórios, cria o banco e o papel `sopatalk`, gera os
+`cloudflared`), cria os diretórios, cria o banco e o papel `ozaptalk`, gera os
 segredos, instala os serviços do launchd e configura a máquina para não dormir e
 voltar sozinha depois de queda de energia. Pode rodar de novo sem medo.
 
-Depois, abra `/usr/local/sopa-talk/etc/sopa-talk.env` e preencha:
+Depois, abra `/usr/local/ozap-talk/etc/ozap-talk.env` e preencha:
 
 | Variável | De onde vem |
 |---|---|
@@ -72,12 +72,12 @@ Mac, troca a pasta do app e reinicia o serviço. Se o build falhar, o que está 
 continua no ar. As migrations sobem com o app — `Database__MigrateOnStartup=true`
 no env file.
 
-A versão anterior fica em `/usr/local/sopa-talk/app.previous`. Para voltar:
+A versão anterior fica em `/usr/local/ozap-talk/app.previous`. Para voltar:
 
 ```bash
-S=/usr/local/sopa-talk
+S=/usr/local/ozap-talk
 rm -rf $S/app && mv $S/app.previous $S/app
-launchctl kickstart -k gui/$(id -u)/team.sopa.talk.api
+launchctl kickstart -k gui/$(id -u)/com.ozaptalk.api
 ```
 
 ## 3. Túnel
@@ -88,13 +88,13 @@ um domínio seu apontado para a Cloudflare.
 
 ```bash
 cloudflared tunnel login
-cloudflared tunnel create sopa-talk
-cloudflared tunnel route dns sopa-talk atendimento.suaempresa.com.br
+cloudflared tunnel create ozap-talk
+cloudflared tunnel route dns ozap-talk atendimento.suaempresa.com.br
 
-cp deploy/macmini/cloudflared/config.yml.example /usr/local/sopa-talk/etc/cloudflared.yml
+cp deploy/macmini/cloudflared/config.yml.example /usr/local/ozap-talk/etc/cloudflared.yml
 # ajuste credentials-file e hostname
 
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/team.sopa.talk.tunnel.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.ozaptalk.tunnel.plist
 ```
 
 Confira: `curl -fsS https://atendimento.suaempresa.com.br/health`
@@ -109,7 +109,7 @@ WhatsApp adicionado:
    Assine o campo `messages`.
 2. **Número** → migre o número da empresa (ver o aviso lá em cima), aprove o nome
    de exibição, complete a verificação do negócio.
-3. Na sopa-talk, conecte o canal (`POST /api/channels`) com o Phone Number ID, o
+3. Na ozap-talk, conecte o canal (`POST /api/channels`) com o Phone Number ID, o
    WABA ID e o token de acesso permanente do app.
 
 Detalhes e o caminho de teste com número da sandbox: `docs/whatsapp-teste.md`.
@@ -130,7 +130,7 @@ Não existe "senha padrão" definida pelo administrador: cada pessoa cria a sua 
 aceite do convite. Se o link se perder, ele também sai no log:
 
 ```bash
-grep -i convite /usr/local/sopa-talk/logs/api.log | tail -5
+grep -i convite /usr/local/ozap-talk/logs/api.log | tail -5
 ```
 
 ---
@@ -138,13 +138,13 @@ grep -i convite /usr/local/sopa-talk/logs/api.log | tail -5
 ## Operação
 
 ```bash
-/usr/local/sopa-talk/bin/status.sh                      # retrato geral
+/usr/local/ozap-talk/bin/status.sh                      # retrato geral
 
-launchctl kickstart -k gui/$(id -u)/team.sopa.talk.api  # reiniciar a API
-launchctl bootout   gui/$(id -u)/team.sopa.talk.api     # parar
-tail -f /usr/local/sopa-talk/logs/api.log               # acompanhar
+launchctl kickstart -k gui/$(id -u)/com.ozaptalk.api  # reiniciar a API
+launchctl bootout   gui/$(id -u)/com.ozaptalk.api     # parar
+tail -f /usr/local/ozap-talk/logs/api.log               # acompanhar
 
-/usr/local/sopa-talk/bin/backup.sh                      # backup agora
+/usr/local/ozap-talk/bin/backup.sh                      # backup agora
 ```
 
 **Atualizar:** `git pull && ./deploy/macmini/publish.sh`.
@@ -152,9 +152,9 @@ tail -f /usr/local/sopa-talk/logs/api.log               # acompanhar
 **Restaurar um backup:**
 
 ```bash
-launchctl bootout gui/$(id -u)/team.sopa.talk.api
-pg_restore --clean --if-exists -h localhost -U sopatalk -d sopatalk ARQUIVO.dump
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/team.sopa.talk.api.plist
+launchctl bootout gui/$(id -u)/com.ozaptalk.api
+pg_restore --clean --if-exists -h localhost -U ozaptalk -d ozaptalk ARQUIVO.dump
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.ozaptalk.api.plist
 ```
 
 Os dumps ficam só no Mac mini. Copie o diretório de backups para fora da máquina
@@ -168,7 +168,7 @@ Os dumps ficam só no Mac mini. Copie o diretório de backups para fora da máqu
 - O painel do Hangfire em `/jobs` fica **fechado em produção** — o
   `HangfireDashboardAuthorizationFilter` só libera em Development. Para inspecionar,
   faça um túnel SSH até a porta 5080.
-- `sopa-talk.env` é 600 e nunca vai para o repositório. Trocar o `Jwt__SigningKey`
+- `ozap-talk.env` é 600 e nunca vai para o repositório. Trocar o `Jwt__SigningKey`
   derruba todas as sessões abertas.
 - Row-Level Security no Postgres continua na lista do R0. Com um tenant só isso não
   te afeta hoje; antes do segundo cliente, sim.

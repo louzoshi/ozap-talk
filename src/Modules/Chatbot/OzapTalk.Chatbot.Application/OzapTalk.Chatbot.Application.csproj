@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\OzapTalk.Chatbot.Domain\OzapTalk.Chatbot.Domain.csproj" />
+    <ProjectReference Include="..\..\..\OzapTalk.SharedKernel\OzapTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\OzapTalk.SharedContracts\OzapTalk.SharedContracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+  </ItemGroup>
+</Project>

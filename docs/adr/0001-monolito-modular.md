@@ -5,7 +5,7 @@
 
 ## Contexto
 
-sopa-talk cobre quatro áreas funcionais (Plataforma de Atendimento, CRM, ChatBot,
+ozap-talk cobre quatro áreas funcionais (Plataforma de Atendimento, CRM, ChatBot,
 Agente IA) que o mercado enxerga como produtos distintos. Time: uma pessoa.
 Objetivo: produto pronto para clientes reais, não protótipo de estudo.
 

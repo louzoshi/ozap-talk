@@ -29,7 +29,7 @@ export function LoginPage() {
   return (
     <div className="auth">
       <form onSubmit={submit}>
-        <h1>Entrar no sopa-talk</h1>
+        <h1>Entrar no ozap-talk</h1>
         <label>
           E-mail
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

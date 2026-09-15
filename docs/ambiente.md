@@ -70,23 +70,23 @@ winget install Docker.DockerDesktop        # ou Rancher Desktop / Podman Desktop
 ### Bootstrap (qualquer SO, depois das ferramentas instaladas)
 
 ```bash
-git clone https://github.com/louzoshi/sopa-talk.git
-cd sopa-talk
+git clone https://github.com/louzoshi/ozap-talk.git
+cd ozap-talk
 
 dotnet tool restore                 # dotnet-ef na versão do time
-dotnet restore SopaTalk.slnx
+dotnet restore OzapTalk.slnx
 npm --prefix frontend ci
 
 docker compose -f infra/docker-compose.yml up -d
-dotnet build SopaTalk.slnx
-dotnet test  SopaTalk.slnx
+dotnet build OzapTalk.slnx
+dotnet test  OzapTalk.slnx
 ```
 
 ### Rodar
 
 ```bash
-dotnet run --project src/SopaTalk.Api        # http://localhost:5080
-dotnet run --project src/SopaTalk.Workers    # jobs
+dotnet run --project src/OzapTalk.Api        # http://localhost:5080
+dotnet run --project src/OzapTalk.Workers    # jobs
 cd frontend && npm run dev                    # http://localhost:5173
 ```
 
@@ -96,7 +96,7 @@ cd frontend && npm run dev                    # http://localhost:5173
 
 Em Development, as migrations de todos os módulos rodam sozinhas no start. A chave
 JWT de dev já vem em `appsettings.Development.json`. Para sobrescrever sem tocar no
-arquivo: `dotnet user-secrets set "Jwt:SigningKey" "<valor>" --project src/SopaTalk.Api`.
+arquivo: `dotnet user-secrets set "Jwt:SigningKey" "<valor>" --project src/OzapTalk.Api`.
 Em produção, `Jwt__SigningKey` vem de variável de ambiente / secret manager.
 
 ### HTTPS local (opcional)

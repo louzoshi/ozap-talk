@@ -1,4 +1,4 @@
-# Roadmap — sopa-talk
+# Roadmap — ozap-talk
 
 Objetivo: paridade funcional com o Umbler Talk, entregue em releases que já sejam
 vendáveis. Cada release fecha um ciclo utilizável por um cliente real.

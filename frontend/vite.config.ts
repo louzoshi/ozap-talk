@@ -20,7 +20,7 @@ export default defineConfig({
   },
   build: {
     // Emit straight into the API's wwwroot so `dotnet publish` ships the SPA.
-    outDir: "../src/SopaTalk.Api/wwwroot",
+    outDir: "../src/OzapTalk.Api/wwwroot",
     emptyOutDir: true,
   },
 });

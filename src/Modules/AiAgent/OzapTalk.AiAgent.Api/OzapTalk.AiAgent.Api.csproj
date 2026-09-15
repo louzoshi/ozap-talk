@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OzapTalk.AiAgent.Application\OzapTalk.AiAgent.Application.csproj" />
+    <ProjectReference Include="..\OzapTalk.AiAgent.Infrastructure\OzapTalk.AiAgent.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\OzapTalk.SharedKernel\OzapTalk.SharedKernel.csproj" />
+  </ItemGroup>
+</Project>

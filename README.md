@@ -1,6 +1,6 @@
-# sopa-talk
+# ozap-talk
 
-[![CI](https://github.com/louzoshi/sopa-talk/actions/workflows/ci.yml/badge.svg)](https://github.com/louzoshi/sopa-talk/actions/workflows/ci.yml)
+[![CI](https://github.com/louzoshi/ozap-talk/actions/workflows/ci.yml/badge.svg)](https://github.com/louzoshi/ozap-talk/actions/workflows/ci.yml)
 
 A multi-channel customer-service platform built on the official WhatsApp Cloud API —
 shared team inbox, CRM, chatbot builder and an AI agent, in a single product. It is a
@@ -20,7 +20,7 @@ in production with paying customers rather than as a demo.
 Umbler Talk markets four "products" (Attendance Platform, CRM for WhatsApp, ChatBot
 for WhatsApp, AI Agent for WhatsApp). They are four views of **one** application that
 share the same core: contacts, conversations, messages, channels, users and tenants.
-sopa-talk is built the same way — one product, four feature modules.
+ozap-talk is built the same way — one product, four feature modules.
 
 ## Feature scope
 
@@ -45,7 +45,7 @@ integration events, so any module can be extracted into its own service later wi
 a rewrite.
 
 ```
-              ┌───────────────────────────── SopaTalk.Api (HTTP host) ─────────────────────────────┐
+              ┌───────────────────────────── OzapTalk.Api (HTTP host) ─────────────────────────────┐
               │  composes modules · auth · OpenAPI · Hangfire dashboard · SignalR · serves the SPA │
               └───────┬───────────────┬───────────────┬───────────────┬───────────────┬────────────┘
                       │               │               │               │               │
@@ -56,7 +56,7 @@ a rewrite.
                       └───────────────┴───────────────┴───────────────┴──────────────┘
                                               │
                           ┌───────────────────▼────────────────────┐   ┌──────────────────────┐
-                          │  PostgreSQL — one schema per module     │   │  SopaTalk.Workers    │
+                          │  PostgreSQL — one schema per module     │   │  OzapTalk.Workers    │
                           │  Hangfire job storage                   │   │  Hangfire server     │
                           └────────────────────────────────────────┘   └──────────────────────┘
 ```
@@ -70,7 +70,7 @@ rule · tactical DDD where the domain is rich · lightweight CQRS · integration
 Result pattern. Rationale is recorded in [`docs/adr/`](docs/adr/).
 
 **Non-negotiable rules.** The first two are machine-enforced by
-[`tests/SopaTalk.ArchitectureTests`](tests/SopaTalk.ArchitectureTests); the other two are
+[`tests/OzapTalk.ArchitectureTests`](tests/OzapTalk.ArchitectureTests); the other two are
 review rules until the tests catch up.
 
 - *(tested)* A module never touches another module's DbContext, tables or internal types.
@@ -103,10 +103,10 @@ PostgreSQL storage.
 
 ```
 src/
-  SopaTalk.Api/            HTTP host — composes modules, auth, OpenAPI, /jobs dashboard, SPA fallback
-  SopaTalk.Workers/        background-job host (Hangfire server)
-  SopaTalk.SharedKernel/   domain primitives, Result, event-bus contracts, multi-tenancy, IModuleInstaller
-  SopaTalk.SharedKernel.Persistence/  EF Core building blocks — TenantDbContext, tenant interceptor
+  OzapTalk.Api/            HTTP host — composes modules, auth, OpenAPI, /jobs dashboard, SPA fallback
+  OzapTalk.Workers/        background-job host (Hangfire server)
+  OzapTalk.SharedKernel/   domain primitives, Result, event-bus contracts, multi-tenancy, IModuleInstaller
+  OzapTalk.SharedKernel.Persistence/  EF Core building blocks — TenantDbContext, tenant interceptor
   Modules/
     Accounts/              companies, users, sign-in, JWT, multi-tenancy
     Channels/              WhatsApp Cloud API
@@ -119,10 +119,10 @@ frontend/                  React + Vite SPA
 infra/                     docker-compose (PostgreSQL + Valkey) — local development only
 deploy/macmini/            single-box production deploy (launchd, Cloudflare Tunnel, backups)
 tests/
-  SopaTalk.Accounts.UnitTests/    auth, roles, invitations
-  SopaTalk.Channels.UnitTests/    webhook parsing & idempotency
-  SopaTalk.Inbox.UnitTests/       conversation domain
-  SopaTalk.ArchitectureTests/     module-boundary enforcement
+  OzapTalk.Accounts.UnitTests/    auth, roles, invitations
+  OzapTalk.Channels.UnitTests/    webhook parsing & idempotency
+  OzapTalk.Inbox.UnitTests/       conversation domain
+  OzapTalk.ArchitectureTests/     module-boundary enforcement
 docs/                      architecture, roadmap, cost models, ADRs
 ```
 
@@ -155,22 +155,22 @@ See [`.devcontainer/README.md`](.devcontainer/README.md).
 
 ```bash
 dotnet tool restore                          # dotnet-ef at the team's version
-dotnet restore SopaTalk.slnx
+dotnet restore OzapTalk.slnx
 npm --prefix frontend ci
 
 docker compose -f infra/docker-compose.yml up -d   # PostgreSQL :5432, Valkey :6379
-dotnet build SopaTalk.slnx
-dotnet test  SopaTalk.slnx
+dotnet build OzapTalk.slnx
+dotnet test  OzapTalk.slnx
 ```
 
 The default connection strings in `appsettings.json` already point at the Compose
-services (database / user / password all `sopatalk`).
+services (database / user / password all `ozaptalk`).
 
 ### Run
 
 ```bash
-dotnet run --project src/SopaTalk.Api        # http://localhost:5080
-dotnet run --project src/SopaTalk.Workers    # background-job processor
+dotnet run --project src/OzapTalk.Api        # http://localhost:5080
+dotnet run --project src/OzapTalk.Workers    # background-job processor
 cd frontend && npm run dev                   # http://localhost:5173
 ```
 

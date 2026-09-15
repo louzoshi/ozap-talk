@@ -1,8 +1,8 @@
-# Arquitetura — sopa-talk
+# Arquitetura — ozap-talk
 
 ## Visão geral
 
-sopa-talk é **um produto**: uma plataforma de atendimento via WhatsApp. As quatro
+ozap-talk é **um produto**: uma plataforma de atendimento via WhatsApp. As quatro
 "ofertas" do Umbler Talk (Plataforma de Atendimento, CRM, ChatBot, Agente IA) são
 recortes de marketing da mesma aplicação, não produtos separados. Todos compartilham
 o mesmo núcleo: contatos, conversas, mensagens, canais, usuários e tenants.
@@ -15,7 +15,7 @@ independente se um dia bater um limite real de escala.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  SopaTalk.Api  (host HTTP)                                   │
+│  OzapTalk.Api  (host HTTP)                                   │
 │  - compõe os módulos via IModuleInstaller                    │
 │  - auth, health, OpenAPI, dashboard Hangfire, SPA fallback   │
 └───────────────┬─────────────────────────────────────────────┘
@@ -28,7 +28,7 @@ independente se um dia bater um limite real de escala.
    └────────────┴────────────┴────────────┴────────────┘
                         │
               ┌─────────▼──────────┐   ┌──────────────────┐
-              │ PostgreSQL          │   │ SopaTalk.Workers │
+              │ PostgreSQL          │   │ OzapTalk.Workers │
               │ 1 banco, 1 schema   │   │ Hangfire server  │
               │ por módulo          │   │ (mesmos módulos) │
               └────────────────────┘   └──────────────────┘
@@ -50,17 +50,17 @@ Fora dos módulos, no `SharedKernel`: primitivos de domínio (`Entity`, `Aggrega
 ## Camadas dentro de um módulo
 
 ```
-SopaTalk.<Módulo>.Domain          entidades, agregados, value objects, domain events
+OzapTalk.<Módulo>.Domain          entidades, agregados, value objects, domain events
         └─ referencia: SharedKernel
 
-SopaTalk.<Módulo>.Application     casos de uso (vertical slices): Command/Query + Handler + Validator
+OzapTalk.<Módulo>.Application     casos de uso (vertical slices): Command/Query + Handler + Validator
         └─ referencia: Domain, SharedKernel
         └─ pasta Contracts/ = integration events (API pública do módulo, versionada)
 
-SopaTalk.<Módulo>.Infrastructure  DbContext (1 schema), repositórios, adapters externos, handlers de job
+OzapTalk.<Módulo>.Infrastructure  DbContext (1 schema), repositórios, adapters externos, handlers de job
         └─ referencia: Application, Domain, SharedKernel
 
-SopaTalk.<Módulo>.Api             endpoints HTTP (minimal API) + o IModuleInstaller do módulo
+OzapTalk.<Módulo>.Api             endpoints HTTP (minimal API) + o IModuleInstaller do módulo
         └─ referencia: Application, Infrastructure, SharedKernel
 ```
 
@@ -82,14 +82,14 @@ EF Core, HttpClient, SDK da Meta, Hangfire — tudo isso só aparece em `Infrast
 
 ## Comunicação entre módulos
 
-Proibido: `CrmDbContext` dentro do `Inbox`; `using SopaTalk.Crm.Domain` fora do Crm.
+Proibido: `CrmDbContext` dentro do `Inbox`; `using OzapTalk.Crm.Domain` fora do Crm.
 
 Permitido: `Inbox` publica `ConversationClosed` no `IEventBus`; `Crm` tem um
 `IIntegrationEventHandler<ConversationClosed>` que reage. Hoje o bus é in-process e
 síncrono dentro da transação; a troca por RabbitMQ (via outbox) não muda publishers
 nem handlers.
 
-Os tipos de integration event ficam em `SopaTalk.<Módulo>.Application/Contracts/` e
+Os tipos de integration event ficam em `OzapTalk.<Módulo>.Application/Contracts/` e
 são tratados como API pública — mudança quebra-compatibilidade exige versionar.
 
 ## Multi-tenancy
@@ -107,7 +107,7 @@ apontando para o Valkey/Redis.
 ## Background jobs
 
 Hangfire com storage no Postgres (`Hangfire.PostgreSql`, MIT). O processo
-`SopaTalk.Workers` roda o Hangfire server; a API só enfileira e expõe o dashboard
+`OzapTalk.Workers` roda o Hangfire server; a API só enfileira e expõe o dashboard
 em `/jobs`. Casos: processar webhook, enviar template, lembrete agendado, disparo em
 massa (com respeito ao rate limit da Meta), reprocessamento com retry/backoff.
 

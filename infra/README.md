@@ -10,7 +10,7 @@ docker compose -f infra/docker-compose.yml down -v       # para e apaga os volum
 
 Sobe:
 
-- **postgres** — `localhost:5432`, banco/usuário/senha `sopatalk`
+- **postgres** — `localhost:5432`, banco/usuário/senha `ozaptalk`
 - **valkey** — `localhost:6379` (drop-in do Redis, BSD; usado quando houver 2+ instâncias)
 
 As connection strings padrão dos `appsettings.json` já apontam para esses valores.

@@ -13,7 +13,7 @@ que vai operar o sistema sozinha (inclusive debugar envio falho de madrugada).
 ## Decisão
 
 **Hangfire** com storage no **PostgreSQL** (`Hangfire.PostgreSql`, MIT). O processo
-`SopaTalk.Workers` roda o Hangfire server; a `SopaTalk.Api` apenas enfileira e expõe
+`OzapTalk.Workers` roda o Hangfire server; a `OzapTalk.Api` apenas enfileira e expõe
 o dashboard em `/jobs` (a ser restrito a admins da plataforma).
 
 Redis/Valkey **não** entra agora. Entra quando:

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Túnel do Cloudflare: expõe a API na URL pública, com HTTPS, sem abrir porta
+     no roteador. Só sobe depois do `cloudflared tunnel login` — ver README. -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.ozaptalk.tunnel</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>__CLOUDFLARED__</string>
+    <string>--no-autoupdate</string>
+    <string>--config</string>
+    <string>__OZAP_HOME__/etc/cloudflared.yml</string>
+    <string>tunnel</string>
+    <string>run</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ProcessType</key>
+  <string>Interactive</string>
+
+  <key>StandardOutPath</key>
+  <string>__OZAP_HOME__/logs/tunnel.log</string>
+  <key>StandardErrorPath</key>
+  <string>__OZAP_HOME__/logs/tunnel.log</string>
+</dict>
+</plist>

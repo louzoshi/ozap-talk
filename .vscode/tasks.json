@@ -17,7 +17,7 @@
       "label": "build",
       "type": "process",
       "command": "dotnet",
-      "args": ["build", "SopaTalk.slnx", "/property:GenerateFullPaths=true", "/consoleloggerparameters:NoSummary"],
+      "args": ["build", "OzapTalk.slnx", "/property:GenerateFullPaths=true", "/consoleloggerparameters:NoSummary"],
       "group": "build",
       "problemMatcher": "$msCompile"
     },
@@ -25,7 +25,7 @@
       "label": "test",
       "type": "process",
       "command": "dotnet",
-      "args": ["test", "SopaTalk.slnx"],
+      "args": ["test", "OzapTalk.slnx"],
       "group": "test",
       "problemMatcher": "$msCompile"
     },

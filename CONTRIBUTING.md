@@ -8,9 +8,9 @@ See [`docs/ambiente.md`](docs/ambiente.md). Fastest path in VS Code:
 ## Day-to-day
 
 ```bash
-dotnet build SopaTalk.slnx
-dotnet test  SopaTalk.slnx
-dotnet format SopaTalk.slnx            # format C# before committing
+dotnet build OzapTalk.slnx
+dotnet test  OzapTalk.slnx
+dotnet format OzapTalk.slnx            # format C# before committing
 npm --prefix frontend run lint
 npm --prefix frontend run format
 ```
@@ -30,7 +30,7 @@ A red build blocks the merge.
 
 1. `dotnet build` is warning-free (`TreatWarningsAsErrors`).
 2. `dotnet test` passes — including the architecture tests in
-   `tests/SopaTalk.ArchitectureTests`, which cover rules 5 and 6 below.
+   `tests/OzapTalk.ArchitectureTests`, which cover rules 5 and 6 below.
 3. `dotnet format --verify-no-changes` — C# matches `.editorconfig`.
 4. The SPA lints, type-checks and builds (`npm run lint`, `npm run build`).
 
@@ -39,7 +39,7 @@ A red build blocks the merge.
 Not yet automated — catch these in review.
 
 5. A module never references another module's `Domain`/`Infrastructure`. Cross-module
-   communication goes through integration events in `SopaTalk.SharedKernel.Messaging`.
+   communication goes through integration events in `OzapTalk.SharedKernel.Messaging`.
 6. `Domain` projects take no dependency on EF Core, ASP.NET Core or external SDKs.
 7. Every persistent entity carries `TenantId`.
 8. Package versions are added to `Directory.Packages.props`, never to a `.csproj`.

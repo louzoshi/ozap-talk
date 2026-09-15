@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OzapTalk.Inbox.Application\OzapTalk.Inbox.Application.csproj" />
+    <ProjectReference Include="..\OzapTalk.Inbox.Infrastructure\OzapTalk.Inbox.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\OzapTalk.SharedKernel\OzapTalk.SharedKernel.csproj" />
+  </ItemGroup>
+</Project>

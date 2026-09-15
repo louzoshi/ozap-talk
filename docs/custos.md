@@ -1,4 +1,4 @@
-# Custos — sopa-talk
+# Custos — ozap-talk
 
 Todos os valores são **estimativas de referência** (agosto/2026). Confirme os preços
 atuais antes de decidir. Moeda: USD salvo indicação.
@@ -58,7 +58,7 @@ Gupshup, Zenvia). BSP adiciona markup por mensagem ou mensalidade fixa. O custo 
 ir direto é: verificação do Meta Business Manager, gestão de templates e de rate
 limit por conta própria — já previsto no módulo `Channels`.
 
-Este custo é **repassado ou embutido** no preço cobrado do cliente sopa-talk, não
+Este custo é **repassado ou embutido** no preço cobrado do cliente ozap-talk, não
 absorvido.
 
 ## Licenças de software (o núcleo é todo gratuito para uso comercial)

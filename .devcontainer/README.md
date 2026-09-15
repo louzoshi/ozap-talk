@@ -1,6 +1,6 @@
 # Dev Container
 
-The recommended way to work on sopa-talk in VS Code — identical toolchain on
+The recommended way to work on ozap-talk in VS Code — identical toolchain on
 Windows, macOS and Linux.
 
 ## Requirements
@@ -18,7 +18,7 @@ Windows, macOS and Linux.
 3. First build takes a few minutes. When it finishes:
    - `dotnet tool restore`, `dotnet restore` and `npm ci` have already run
    - Postgres + Valkey are up (via `infra/docker-compose.yml` on the host Docker)
-4. Run the backend: **Run and Debug → "API + Workers"** (or `dotnet run --project src/SopaTalk.Api`).
+4. Run the backend: **Run and Debug → "API + Workers"** (or `dotnet run --project src/OzapTalk.Api`).
 5. Run the frontend: `npm --prefix frontend run dev`.
 
 Ports 5080 (API) and 5173 (frontend) are forwarded automatically.

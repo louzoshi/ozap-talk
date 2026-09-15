@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NetArchTest.Rules" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OzapTalk.SharedKernel\OzapTalk.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Channels\OzapTalk.Channels.Domain\OzapTalk.Channels.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Channels\OzapTalk.Channels.Application\OzapTalk.Channels.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Channels\OzapTalk.Channels.Infrastructure\OzapTalk.Channels.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Channels\OzapTalk.Channels.Api\OzapTalk.Channels.Api.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Inbox\OzapTalk.Inbox.Domain\OzapTalk.Inbox.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Inbox\OzapTalk.Inbox.Application\OzapTalk.Inbox.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Inbox\OzapTalk.Inbox.Infrastructure\OzapTalk.Inbox.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Inbox\OzapTalk.Inbox.Api\OzapTalk.Inbox.Api.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Crm\OzapTalk.Crm.Domain\OzapTalk.Crm.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Crm\OzapTalk.Crm.Application\OzapTalk.Crm.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Crm\OzapTalk.Crm.Infrastructure\OzapTalk.Crm.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Crm\OzapTalk.Crm.Api\OzapTalk.Crm.Api.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Chatbot\OzapTalk.Chatbot.Domain\OzapTalk.Chatbot.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Chatbot\OzapTalk.Chatbot.Application\OzapTalk.Chatbot.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Chatbot\OzapTalk.Chatbot.Infrastructure\OzapTalk.Chatbot.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Chatbot\OzapTalk.Chatbot.Api\OzapTalk.Chatbot.Api.csproj" />
+    <ProjectReference Include="..\..\src\Modules\AiAgent\OzapTalk.AiAgent.Domain\OzapTalk.AiAgent.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Modules\AiAgent\OzapTalk.AiAgent.Application\OzapTalk.AiAgent.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\AiAgent\OzapTalk.AiAgent.Infrastructure\OzapTalk.AiAgent.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Modules\AiAgent\OzapTalk.AiAgent.Api\OzapTalk.AiAgent.Api.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Accounts\OzapTalk.Accounts.Domain\OzapTalk.Accounts.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Accounts\OzapTalk.Accounts.Application\OzapTalk.Accounts.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Accounts\OzapTalk.Accounts.Infrastructure\OzapTalk.Accounts.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Accounts\OzapTalk.Accounts.Api\OzapTalk.Accounts.Api.csproj" />
+  </ItemGroup>
+</Project>

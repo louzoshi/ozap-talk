@@ -1,0 +1,52 @@
+<Solution>
+  <Folder Name="/Modules/" />
+  <Folder Name="/Modules/Accounts/">
+    <Project Path="src/Modules/Accounts/OzapTalk.Accounts.Api/OzapTalk.Accounts.Api.csproj" />
+    <Project Path="src/Modules/Accounts/OzapTalk.Accounts.Application/OzapTalk.Accounts.Application.csproj" />
+    <Project Path="src/Modules/Accounts/OzapTalk.Accounts.Domain/OzapTalk.Accounts.Domain.csproj" />
+    <Project Path="src/Modules/Accounts/OzapTalk.Accounts.Infrastructure/OzapTalk.Accounts.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/AiAgent/">
+    <Project Path="src/Modules/AiAgent/OzapTalk.AiAgent.Api/OzapTalk.AiAgent.Api.csproj" />
+    <Project Path="src/Modules/AiAgent/OzapTalk.AiAgent.Application/OzapTalk.AiAgent.Application.csproj" />
+    <Project Path="src/Modules/AiAgent/OzapTalk.AiAgent.Domain/OzapTalk.AiAgent.Domain.csproj" />
+    <Project Path="src/Modules/AiAgent/OzapTalk.AiAgent.Infrastructure/OzapTalk.AiAgent.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Channels/">
+    <Project Path="src/Modules/Channels/OzapTalk.Channels.Api/OzapTalk.Channels.Api.csproj" />
+    <Project Path="src/Modules/Channels/OzapTalk.Channels.Application/OzapTalk.Channels.Application.csproj" />
+    <Project Path="src/Modules/Channels/OzapTalk.Channels.Domain/OzapTalk.Channels.Domain.csproj" />
+    <Project Path="src/Modules/Channels/OzapTalk.Channels.Infrastructure/OzapTalk.Channels.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Chatbot/">
+    <Project Path="src/Modules/Chatbot/OzapTalk.Chatbot.Api/OzapTalk.Chatbot.Api.csproj" />
+    <Project Path="src/Modules/Chatbot/OzapTalk.Chatbot.Application/OzapTalk.Chatbot.Application.csproj" />
+    <Project Path="src/Modules/Chatbot/OzapTalk.Chatbot.Domain/OzapTalk.Chatbot.Domain.csproj" />
+    <Project Path="src/Modules/Chatbot/OzapTalk.Chatbot.Infrastructure/OzapTalk.Chatbot.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Crm/">
+    <Project Path="src/Modules/Crm/OzapTalk.Crm.Api/OzapTalk.Crm.Api.csproj" />
+    <Project Path="src/Modules/Crm/OzapTalk.Crm.Application/OzapTalk.Crm.Application.csproj" />
+    <Project Path="src/Modules/Crm/OzapTalk.Crm.Domain/OzapTalk.Crm.Domain.csproj" />
+    <Project Path="src/Modules/Crm/OzapTalk.Crm.Infrastructure/OzapTalk.Crm.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Inbox/">
+    <Project Path="src/Modules/Inbox/OzapTalk.Inbox.Api/OzapTalk.Inbox.Api.csproj" />
+    <Project Path="src/Modules/Inbox/OzapTalk.Inbox.Application/OzapTalk.Inbox.Application.csproj" />
+    <Project Path="src/Modules/Inbox/OzapTalk.Inbox.Domain/OzapTalk.Inbox.Domain.csproj" />
+    <Project Path="src/Modules/Inbox/OzapTalk.Inbox.Infrastructure/OzapTalk.Inbox.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/OzapTalk.Api/OzapTalk.Api.csproj" />
+    <Project Path="src/OzapTalk.Workers/OzapTalk.Workers.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OzapTalk.Accounts.UnitTests/OzapTalk.Accounts.UnitTests.csproj" />
+    <Project Path="tests/OzapTalk.ArchitectureTests/OzapTalk.ArchitectureTests.csproj" />
+    <Project Path="tests/OzapTalk.Channels.UnitTests/OzapTalk.Channels.UnitTests.csproj" />
+    <Project Path="tests/OzapTalk.Inbox.UnitTests/OzapTalk.Inbox.UnitTests.csproj" />
+  </Folder>
+  <Project Path="src/OzapTalk.SharedContracts/OzapTalk.SharedContracts.csproj" />
+  <Project Path="src/OzapTalk.SharedKernel.Persistence/OzapTalk.SharedKernel.Persistence.csproj" />
+  <Project Path="src/OzapTalk.SharedKernel/OzapTalk.SharedKernel.csproj" />
+</Solution>

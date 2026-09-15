@@ -1,11 +1,11 @@
-# Configuração do túnel. Copiar para $SOPA_HOME/etc/cloudflared.yml e ajustar
+# Configuração do túnel. Copiar para $OZAP_HOME/etc/cloudflared.yml e ajustar
 # o tunnel, o credentials-file e o hostname.
 #
 #   cloudflared tunnel login
-#   cloudflared tunnel create sopa-talk
-#   cloudflared tunnel route dns sopa-talk atendimento.suaempresa.com.br
+#   cloudflared tunnel create ozap-talk
+#   cloudflared tunnel route dns ozap-talk atendimento.suaempresa.com.br
 
-tunnel: sopa-talk
+tunnel: ozap-talk
 credentials-file: /Users/SEU_USUARIO/.cloudflared/SEU-TUNNEL-ID.json
 
 ingress:

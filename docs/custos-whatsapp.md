@@ -1,4 +1,4 @@
-# Custos WhatsApp / Meta — sopa-talk
+# Custos WhatsApp / Meta — ozap-talk
 
 > Estimativas de referência (agosto/2026). Os valores e regras da Meta mudam com
 > frequência — **confirme sempre** em <https://developers.facebook.com/docs/whatsapp/pricing>
@@ -40,11 +40,11 @@ aqui = montar o system prompt + subir os documentos da empresa (base de conhecim
 | **Authentication** | código de verificação (OTP) | ~US$ 0,0315 |
 | **Service** (resposta livre na janela de 24h) | atendimento | US$ 0,00 (até out/2026) |
 
-## Categoria "Meta Business Agent" (ago/2026) — afeta o sopa-talk diretamente
+## Categoria "Meta Business Agent" (ago/2026) — afeta o ozap-talk diretamente
 
 Relatos do mercado indicam que a Meta criou uma categoria para **respostas geradas
 por IA**, cobrada **por token, ~US$ 2,00 por 1 milhão de tokens**. Ou seja: quando o
-agente do sopa-talk responde um cliente, além do token pago à Anthropic, a Meta passa
+agente do ozap-talk responde um cliente, além do token pago à Anthropic, a Meta passa
 a cobrar o token dela.
 
 Status: **provável, confirmar na fonte oficial antes de usar em cálculo de preço.**
@@ -65,7 +65,7 @@ Status: **provável, confirmar na fonte oficial antes de usar em cálculo de pre
 
 ## Quem paga
 
-- **Produção:** quem paga é o **cliente do sopa-talk** (a empresa que contrata). O
+- **Produção:** quem paga é o **cliente do ozap-talk** (a empresa que contrata). O
   custo é repassado ou embutido no preço do plano — mesmo modelo do Umbler Talk.
 - **Desenvolvimento / teste:** paga você, mas a Meta fornece um **número de teste**
   com envio gratuito para até **5 números verificados** — dá para testar o fluxo
