@@ -1,13 +1,17 @@
 # sopa-talk
 
+[![CI](https://github.com/louzoshi/sopa-talk/actions/workflows/ci.yml/badge.svg)](https://github.com/louzoshi/sopa-talk/actions/workflows/ci.yml)
+
 A multi-channel customer-service platform built on the official WhatsApp Cloud API —
 shared team inbox, CRM, chatbot builder and an AI agent, in a single product. It is a
 functional rebuild of [Umbler Talk](https://a.umbler.com/br/talk/), engineered to run
 in production with paying customers rather than as a demo.
 
-> **Status: early development.** The modular skeleton compiles and is covered by unit
-> and architecture tests. Persistence (migrations, multi-tenancy), authentication and
-> the WhatsApp integration are the next milestones — see [Roadmap](#roadmap).
+> **Status: R1 in progress.** WhatsApp works end to end — connect a number, receive a
+> signature-checked webhook, reply from a live inbox UI. Authentication, team roles and
+> e-mail invitations are done. Next up: media & template messages, teams and routing
+> queues, and Row-Level Security. See [Current state](#current-state) for the precise
+> line between done and not done, and [Roadmap](#roadmap) for the plan.
 
 ---
 
@@ -25,13 +29,13 @@ sellable on their own.
 
 | Area | What it covers | Status |
 |---|---|---|
-| **Platform** | Multi-agent shared inbox, teams & departments, routing queues, assignment & handoff, internal notes, tags, quick replies, webchat widget | Planned — R1 |
-| **Channels** | Official WhatsApp Cloud API: number onboarding, idempotent webhook ingestion, outbound text/media/templates, 24-hour window, messaging tiers & rate limits | Planned — R1 |
+| **Platform** | Multi-agent shared inbox, teams & departments, routing queues, assignment & handoff, internal notes, tags, quick replies, webchat widget | **In progress — R1** · inbox, auth and roles done |
+| **Channels** | Official WhatsApp Cloud API: number onboarding, idempotent webhook ingestion, outbound text/media/templates, 24-hour window, messaging tiers & rate limits | **In progress — R1** · onboarding, webhooks and outbound text done |
 | **CRM** | Visual pipelines / kanban, deals, stages, automatic lead routing, CSV contact import | Planned — R2 |
 | **ChatBot** | Visual flow builder, execution engine (keyword / schedule / tag triggers), handoff to a human, message scheduling & reminders | Planned — R3 |
 | **AI Agent** | Per-company knowledge base, LLM loop with tools/skills, configurable handoff criteria, guardrails | Planned — R4 |
 | **Enterprise** | Public API & webhooks, audit logs, multi-unit / multi-brand, full reporting, plans & billing | Planned — R5 |
-| Modular monolith skeleton, shared kernel, hosts, CI-ready build | — | **Done — R0 (in progress)** |
+| **Foundation** | Modular monolith skeleton, shared kernel, hosts, CI pipeline | **Done — R0** |
 
 ## Architecture
 
@@ -65,13 +69,17 @@ Patterns: Modular Monolith · Vertical Slice Architecture · Clean/Hexagonal dep
 rule · tactical DDD where the domain is rich · lightweight CQRS · integration events ·
 Result pattern. Rationale is recorded in [`docs/adr/`](docs/adr/).
 
-**Non-negotiable rules** (enforced by architecture tests):
+**Non-negotiable rules.** The first two are machine-enforced by
+[`tests/SopaTalk.ArchitectureTests`](tests/SopaTalk.ArchitectureTests); the other two are
+review rules until the tests catch up.
 
-- A module never touches another module's DbContext, tables or internal types.
-- `Domain` never references EF Core, HTTP or external SDKs.
-- Every persistent entity carries `TenantId`; EF Core global filter **and** Postgres
-  Row-Level Security both apply.
-- Meta webhooks are processed idempotently.
+- *(tested)* A module never touches another module's DbContext, tables or internal types.
+- *(tested)* `Domain` never references EF Core, HTTP or external SDKs.
+- Every persistent entity carries `TenantId`, applied by the EF Core global query filter
+  and the tenant write interceptor. Postgres Row-Level Security is the intended second
+  barrier and is **not implemented yet** — status and reasoning in
+  [`docs/seguranca.md`](docs/seguranca.md).
+- Meta webhooks are processed idempotently, keyed on the Meta message id.
 
 Full write-up: [`docs/arquitetura.md`](docs/arquitetura.md).
 
@@ -84,7 +92,7 @@ Full write-up: [`docs/arquitetura.md`](docs/arquitetura.md).
 | Background jobs | Hangfire (PostgreSQL storage) |
 | Realtime | SignalR (Redis/Valkey backplane once running >1 instance) |
 | Frontend | React 19 + Vite (SPA), served as static files by the ASP.NET host |
-| Tests | xUnit, FluentAssertions, Testcontainers, NetArchTest |
+| Tests | xUnit, FluentAssertions, NetArchTest — unit + architecture only; no integration suite yet |
 | Local infra | Docker Compose — PostgreSQL + Valkey |
 
 Package versions are pinned centrally in `Directory.Packages.props`. Commercial
@@ -111,7 +119,9 @@ frontend/                  React + Vite SPA
 infra/                     docker-compose (PostgreSQL + Valkey) — local development only
 deploy/macmini/            single-box production deploy (launchd, Cloudflare Tunnel, backups)
 tests/
-  SopaTalk.Inbox.UnitTests/       domain unit tests
+  SopaTalk.Accounts.UnitTests/    auth, roles, invitations
+  SopaTalk.Channels.UnitTests/    webhook parsing & idempotency
+  SopaTalk.Inbox.UnitTests/       conversation domain
   SopaTalk.ArchitectureTests/     module-boundary enforcement
 docs/                      architecture, roadmap, cost models, ADRs
 ```
@@ -139,7 +149,7 @@ See [`.devcontainer/README.md`](.devcontainer/README.md).
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download) (feature band ≥ 111)
 - [Node.js](https://nodejs.org) 22 LTS (`nvm install` reads `.nvmrc`)
-- Docker (Engine + Compose) — also required by the Testcontainers integration tests
+- Docker (Engine + Compose) — runs the local PostgreSQL and Valkey
 
 **Bootstrap:**
 
@@ -202,7 +212,7 @@ Contributing workflow and the rules CI enforces: [`CONTRIBUTING.md`](CONTRIBUTIN
   → conversation list → thread → composer) is wired to the API and to SignalR for
   live updates.
 - **Still to do:** media & template messages, teams/queues/tags, refresh tokens,
-  2FA, login lockout, Row-Level Security, a CQRS dispatcher, the outbox, CI.
+  2FA, login lockout, Row-Level Security, a CQRS dispatcher, and the outbox.
 
 ## Deploy
 
@@ -222,7 +232,7 @@ Step-by-step, WhatsApp number caveats and day-to-day operation:
 
 | Release | Theme | Highlights |
 |---|---|---|
-| **R0** | Foundation *(in progress)* | CQRS dispatcher, migrations + `TenantId` + RLS, authentication + 2FA, transactional outbox, structured logging + Sentry, CI pipeline |
+| **R0** | Foundation *(in progress)* | CQRS dispatcher, migrations + `TenantId` + RLS, authentication + 2FA, transactional outbox, structured logging + Sentry |
 | **R1** | Attendance Platform *(first sellable release)* | WhatsApp Cloud API, multi-agent inbox, teams & routing, realtime, webchat widget, essential reports, opt-in tracking |
 | **R2** | CRM | Kanban pipelines, deals, lead routing, CSV import |
 | **R3** | ChatBot | Visual flow builder, execution engine, scheduling & reminders |
