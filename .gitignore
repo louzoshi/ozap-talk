@@ -509,3 +509,6 @@ infra/**/data/
 
 # E-mails gravados pelo remetente de desenvolvimento
 **/tmp/emails/
+
+# Test run output
+TestResults/
